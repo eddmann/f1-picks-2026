@@ -1,0 +1,14 @@
+[project]
+name = "f1-picks-2026-analysis"
+version = "0.1.0"
+description = "Analysis notebooks and tooling for F1 Picks 2026"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastf1>=3.7.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.1",
+    "pandas>=2.3.3",
+    "scipy>=1.17.0",
+]

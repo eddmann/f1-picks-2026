@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo-dark.png" alt="F1 Picks Logo" width="400">
+</p>
+
 # 🏁 F1 Picks (2026 edition)
 
 _A fresh season, updated rules, same family rivalry._

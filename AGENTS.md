@@ -108,5 +108,5 @@ make ship  # typecheck → build → db:migrate:remote → deploy
 **Gotchas:**
 - Pick deadline: 10 minutes before qualifying (or sprint qualifying for sprint weekends)
 - Wild card races (23-24): drivers can be reused; races 1-22: each driver only once
-- Scheduled cron (`0 */2 * * 5,6,0`) syncs race results from OpenF1 API
+- Scheduled crons (every 2 hours on Fri/Sat/Sun) sync race results from OpenF1 API
 - Python analysis in `analysis/` uses `uv` package manager, not Bun

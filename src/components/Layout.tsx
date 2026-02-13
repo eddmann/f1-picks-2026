@@ -36,7 +36,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="glass gradient-border-b sticky top-0 z-50">
+      <header className="glass gradient-border-b sticky top-0 z-50 safe-top">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <NavLink
             to="/"

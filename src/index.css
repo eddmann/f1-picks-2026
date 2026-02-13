@@ -127,6 +127,11 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
+/* iOS safe area: push header content below status bar */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

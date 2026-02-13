@@ -77,6 +77,13 @@ deploy: ## Deploy to Cloudflare
 
 can-release: lint test ## CI gate - all checks
 
+##@ iOS
+
+ios/setup: ## Generate iOS project with PWAKit
+	rm -rf ios
+	npx @pwa-kit/cli init ios --url "https://f1-picks-2026.eddmann.workers.dev/"
+	open ios/PWAKitApp.xcodeproj
+
 ##@ Utilities
 
 clean: ## Clean build artifacts

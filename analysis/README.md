@@ -14,10 +14,12 @@ Then run all cells (Cell > Run All).
 ## How It Works
 
 1. **Fetches 2026 calendar** from OpenF1 API (24 races, 6 sprints, 2 wild cards)
-2. **Loads historical results** from FastF1 (2024-2025 + any 2026 data)
-3. **Builds expected points matrix** (22 drivers × all circuits)
-4. **Solves optimal allocation** using Hungarian algorithm
-5. **Outputs pick recommendations** with form/consistency analysis
+2. **Loads Bahrain pre-season testing** to derive data-driven team baselines
+3. **Loads historical results** from FastF1 (2024-2025 + any 2026 data)
+4. **Builds expected points matrix** (22 drivers × all circuits)
+5. **Adjusts for current round** using FP1/FP2/FP3 practice data
+6. **Solves optimal allocation** using Hungarian algorithm
+7. **Outputs pick recommendations** with form/consistency analysis
 
 ## Game Rules Implemented
 
@@ -38,9 +40,11 @@ Then run all cells (Cell > Run All).
 
 ### Workflow
 
-1. **Monday of race week**: Re-run notebook
-2. **After practice sessions**: Check form recommendations
-3. **Before qualifying**: Lock in your pick (deadline is 10 min before quali)
+1. **Monday of race week**: Update `CURRENT_ROUND` in notebook
+2. **After practice sessions**: Re-run notebook (loads FP data for current round)
+   - Normal weekends: run after FP3 (Saturday), before Qualifying
+   - Sprint weekends: run after FP1 (Friday), before Sprint Qualifying
+3. **Before qualifying**: Lock in your pick (deadline is 10 min before quali/sprint quali)
 
 ## Output Files
 
@@ -57,7 +61,9 @@ Then run all cells (Cell > Run All).
 ## Notebook Phases
 
 1. **Setup**: Load libraries, enable cache
+1.5. **Pre-Season Testing**: Load Bahrain testing laps, derive team baselines
 2. **Expected Points Matrix**: Driver × circuit historical averages
+2.5. **Practice Adjustment**: Load FP data for current round, adjust expected points
 3. **Optimal Allocation**: Hungarian algorithm + wild card picks
 4. **Form Momentum**: Hot/cold driver tracking
 5. **Consistency Analysis**: Variance-based risk assessment
@@ -76,6 +82,8 @@ Managed by uv (see `pyproject.toml`):
 
 Major car/rules overhaul means historical data is less predictive early in the season. The notebook handles this by:
 
+- Using Bahrain pre-season testing to set team baselines from real 2026 pace data
+- Adjusting expected points per-round using FP1/FP2/FP3 practice data
 - Weighting 2026 results highest (1.0x) as they become available
 - Tracking form momentum to catch teams that adapted well/poorly
 - Providing consistency analysis to manage risk

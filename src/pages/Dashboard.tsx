@@ -252,8 +252,9 @@ export default function Dashboard() {
         </div>
 
         <div className="divide-y divide-asphalt">
-          {standings.slice(0, 5).map((entry, index) => {
+          {standings.map((entry) => {
             const isCurrentUser = entry.user_id === user?.id;
+            const rank = entry.rank;
             return (
               <div
                 key={entry.user_id}
@@ -262,15 +263,15 @@ export default function Dashboard() {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  {index === 0 ? (
-                    <div className="position-badge position-1">1</div>
-                  ) : index === 1 ? (
-                    <div className="position-badge position-2">2</div>
-                  ) : index === 2 ? (
-                    <div className="position-badge position-3">3</div>
+                  {rank === 1 ? (
+                    <div className="position-badge position-1">{rank}</div>
+                  ) : rank === 2 ? (
+                    <div className="position-badge position-2">{rank}</div>
+                  ) : rank === 3 ? (
+                    <div className="position-badge position-3">{rank}</div>
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-carbon-light flex items-center justify-center text-sm font-bold text-gray-500">
-                      {index + 1}
+                      {rank}
                     </div>
                   )}
                   <span

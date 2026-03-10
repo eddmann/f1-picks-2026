@@ -34,11 +34,14 @@ export async function getLeaderboard(
 
   const standings = await deps.userStatsRepository.getLeaderboard(season.id);
 
+  let currentRank = 1;
   const rankedStandings: RankedLeaderboardEntry[] = standings.map(
-    (entry, index) => ({
-      ...entry,
-      rank: index + 1,
-    }),
+    (entry, i) => {
+      if (i > 0 && entry.total_points !== standings[i - 1].total_points) {
+        currentRank = i + 1;
+      }
+      return { ...entry, rank: currentRank };
+    },
   );
 
   return ok({

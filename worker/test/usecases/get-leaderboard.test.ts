@@ -147,11 +147,12 @@ describe("getLeaderboard", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.standings.length).toBe(2);
-      // Bob should be first (same points, more races)
+      // Bob should be first (same points, more races as tiebreak for order)
       expect(result.value.standings[0].user_name).toBe("Bob");
       expect(result.value.standings[0].rank).toBe(1);
       expect(result.value.standings[1].user_name).toBe("Alice");
-      expect(result.value.standings[1].rank).toBe(2);
+      // Same points = shared rank
+      expect(result.value.standings[1].rank).toBe(1);
     }
   });
 

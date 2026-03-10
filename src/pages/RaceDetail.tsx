@@ -20,13 +20,16 @@ export default function RaceDetail() {
   const [results, setResults] = useState<RaceResultWithDriver[]>([]);
   const [picks, setPicks] = useState<PickWithUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"results" | "picks">("results");
+  const [tabOverride, setTabOverride] = useState<"results" | "picks" | null>(
+    null,
+  );
 
   useEffect(() => {
     async function loadData() {
       if (!id) return;
 
       setIsLoading(true);
+      setTabOverride(null);
       const response = await api.getRaceResults(parseInt(id, 10));
 
       if (response.data) {
@@ -62,7 +65,12 @@ export default function RaceDetail() {
     );
   }
 
-  const sortedPicks = [...picks].sort((a, b) => b.points - a.points);
+  const hasResults = results.length > 0;
+  const defaultTab = hasResults ? "results" : "picks";
+  const activeTab = tabOverride ?? defaultTab;
+  const sortedPicks = hasResults
+    ? [...picks].sort((a, b) => b.points - a.points)
+    : picks;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -104,34 +112,36 @@ export default function RaceDetail() {
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={() => setActiveTab("results")}
-          className={`
-            px-5 py-2.5 rounded-xl font-medium transition-all duration-200 btn-press
-            ${
-              activeTab === "results"
-                ? "bg-f1-red text-white glow-red"
-                : "bg-carbon border border-asphalt text-gray-400 hover:text-white hover:bg-carbon-light"
-            }
-          `}
-        >
-          Race Results
-        </button>
-        <button
-          onClick={() => setActiveTab("picks")}
-          className={`
-            px-5 py-2.5 rounded-xl font-medium transition-all duration-200 btn-press
-            ${
-              activeTab === "picks"
-                ? "bg-f1-red text-white glow-red"
-                : "bg-carbon border border-asphalt text-gray-400 hover:text-white hover:bg-carbon-light"
-            }
-          `}
-        >
-          Player Picks
-        </button>
-      </div>
+      {hasResults && (
+        <div className="flex gap-2">
+          <button
+            onClick={() => setTabOverride("results")}
+            className={`
+              px-5 py-2.5 rounded-xl font-medium transition-all duration-200 btn-press
+              ${
+                activeTab === "results"
+                  ? "bg-f1-red text-white glow-red"
+                  : "bg-carbon border border-asphalt text-gray-400 hover:text-white hover:bg-carbon-light"
+              }
+            `}
+          >
+            Race Results
+          </button>
+          <button
+            onClick={() => setTabOverride("picks")}
+            className={`
+              px-5 py-2.5 rounded-xl font-medium transition-all duration-200 btn-press
+              ${
+                activeTab === "picks"
+                  ? "bg-f1-red text-white glow-red"
+                  : "bg-carbon border border-asphalt text-gray-400 hover:text-white hover:bg-carbon-light"
+              }
+            `}
+          >
+            Player Picks
+          </button>
+        </div>
+      )}
 
       {activeTab === "results" && (
         <div className="bg-carbon border border-asphalt rounded-xl overflow-hidden">
@@ -222,10 +232,12 @@ export default function RaceDetail() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-[1fr_1fr_80px] gap-4 px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400">
+              <div
+                className={`grid gap-4 px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400 ${hasResults ? "grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}`}
+              >
                 <div>Player</div>
                 <div>Pick</div>
-                <div className="text-right">Points</div>
+                {hasResults && <div className="text-right">Points</div>}
               </div>
 
               <div className="divide-y divide-asphalt">
@@ -233,12 +245,13 @@ export default function RaceDetail() {
                   <div
                     key={pick.id}
                     className={`
-                      grid grid-cols-[1fr_1fr_80px] gap-4 px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
+                      grid gap-4 px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
+                      ${hasResults ? "grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}
                       ${index < 5 ? `animate-slide-up stagger-${index + 1}` : ""}
                     `}
                   >
                     <div className="flex items-center gap-2">
-                      {index === 0 && pick.points > 0 && (
+                      {hasResults && index === 0 && pick.points > 0 && (
                         <Trophy className="h-4 w-4 text-pole" />
                       )}
                       <span className="font-medium text-gray-300">
@@ -259,14 +272,16 @@ export default function RaceDetail() {
                       </span>
                     </div>
 
-                    <div className="text-right">
-                      <span
-                        className={`font-bold ${pick.points > 0 ? "text-f1-red" : "text-gray-500"}`}
-                      >
-                        {pick.points}
-                      </span>
-                      <span className="text-gray-500 text-sm ml-1">pts</span>
-                    </div>
+                    {hasResults && (
+                      <div className="text-right">
+                        <span
+                          className={`font-bold ${pick.points > 0 ? "text-f1-red" : "text-gray-500"}`}
+                        >
+                          {pick.points}
+                        </span>
+                        <span className="text-gray-500 text-sm ml-1">pts</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

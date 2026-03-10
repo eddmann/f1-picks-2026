@@ -10,6 +10,7 @@ import type {
 } from "../repositories/interfaces/pick.repository";
 import { ok, err } from "../utils/result";
 import { notFound, validationError } from "./errors";
+import { getPickWindowStatus } from "../../shared/pick-window";
 
 export interface EnrichedRaceResult extends RaceResult {
   driver: Driver | null;
@@ -35,6 +36,7 @@ export interface GetRaceResultsDeps {
 
 export interface GetRaceResultsInput {
   raceId: number;
+  now?: Date;
 }
 
 export async function getRaceResults(
@@ -51,9 +53,14 @@ export async function getRaceResults(
     return err(notFound("Race", input.raceId));
   }
 
+  const windowStatus = getPickWindowStatus(race, input.now);
+  const picksVisible = windowStatus.status === "locked";
+
   const [results, picks] = await Promise.all([
     deps.raceResultRepository.getByRaceId(input.raceId),
-    deps.pickRepository.getForRace(input.raceId),
+    picksVisible
+      ? deps.pickRepository.getForRace(input.raceId)
+      : Promise.resolve([]),
   ]);
 
   const resultsMap = new Map(results.map((r) => [r.driver_id, r]));

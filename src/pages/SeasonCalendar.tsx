@@ -52,7 +52,11 @@ export default function SeasonCalendar() {
             return (
               <Link
                 key={race.id}
-                to={isCompleted ? `/race/${race.id}` : `/pick/${race.id}`}
+                to={
+                  isCompleted || isLocked
+                    ? `/race/${race.id}`
+                    : `/pick/${race.id}`
+                }
                 className={`
                   block relative pl-8 sm:pl-10 animate-slide-up
                   ${index < 5 ? `stagger-${index + 1}` : ""}

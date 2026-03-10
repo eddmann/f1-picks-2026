@@ -15,6 +15,9 @@ import {
   resetAllFixtureCounters,
 } from "../fixtures";
 
+// A date well after all fixture races have locked
+const AFTER_LOCK = new Date("2027-01-01T00:00:00Z");
+
 describe("getRaceResults", () => {
   beforeEach(() => {
     resetAllFixtureCounters();
@@ -34,7 +37,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -71,7 +74,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -114,7 +117,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -149,7 +152,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -190,7 +193,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -260,7 +263,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -297,7 +300,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -355,7 +358,7 @@ describe("getRaceResults", () => {
       pickRepository: createMemoryPickRepository(store),
     };
 
-    const result = await getRaceResults(deps, { raceId: 1 });
+    const result = await getRaceResults(deps, { raceId: 1, now: AFTER_LOCK });
 
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -364,6 +367,40 @@ describe("getRaceResults", () => {
       const bobPick = result.value.picks.find((p) => p.user_name === "Bob");
       expect(alicePick?.points).toBe(25);
       expect(bobPick?.points).toBe(1);
+    }
+  });
+
+  test("hides picks when pick window is still open", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1 });
+    const qualiTime = new Date("2027-06-14T15:00:00Z");
+    const race = createRace({ id: 1, seasonId: 1, qualiTime });
+    const driver = createDriver({ id: 1, seasonId: 1 });
+    const user = createUser({ id: 1, name: "Alice" });
+    const pick = createPick({ userId: 1, raceId: 1, driverId: 1 });
+
+    seedTestStore(store, {
+      seasons: [season],
+      races: [race],
+      drivers: [driver],
+      users: [user],
+      picks: [pick],
+    });
+
+    const deps = {
+      raceRepository: createMemoryRaceRepository(store),
+      raceResultRepository: createMemoryRaceResultRepository(store),
+      driverRepository: createMemoryDriverRepository(store),
+      pickRepository: createMemoryPickRepository(store),
+    };
+
+    // During the open window (Tuesday of race week)
+    const duringWindow = new Date("2027-06-10T12:00:00Z");
+    const result = await getRaceResults(deps, { raceId: 1, now: duringWindow });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.picks).toEqual([]);
     }
   });
 });

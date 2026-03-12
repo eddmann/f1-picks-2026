@@ -54,6 +54,22 @@ make build
 
 Run `make` to see all available targets.
 
+## Push Notifications
+
+To enable push notifications (pick reminders and result alerts), set up VAPID keys:
+
+```bash
+# Generate a key pair
+bunx web-push generate-vapid-keys
+
+# Store as Cloudflare secrets
+bunx wrangler secret put VAPID_PUBLIC_KEY
+bunx wrangler secret put VAPID_PRIVATE_KEY
+bunx wrangler secret put VAPID_SUBJECT   # e.g. mailto:you@example.com
+```
+
+Users can subscribe from their profile page. Notifications are sent via scheduled crons before qualifying deadlines and after results are synced.
+
 ## Demo Mode
 
 Run the UI with in-browser demo data (no backend required):

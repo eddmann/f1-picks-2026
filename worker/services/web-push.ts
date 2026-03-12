@@ -79,6 +79,7 @@ function concat(...parts: (ArrayBuffer | Uint8Array)[]): ArrayBuffer {
 async function createVapidJwt(
   audience: string,
   subject: string,
+  publicKeyBase64: string,
   privateKeyBase64: string,
 ): Promise<string> {
   const header = { typ: "JWT", alg: "ES256" };
@@ -98,11 +99,18 @@ async function createVapidJwt(
 
   const unsignedToken = `${headerB64}.${payloadB64}`;
 
-  // Import the ECDSA P-256 private key
-  const privateKeyBuffer = urlBase64ToBuffer(privateKeyBase64);
+  // Import the raw ECDSA P-256 private key via JWK
+  // web-push generates raw 32-byte keys, not PKCS8
+  const publicKeyBytes = new Uint8Array(urlBase64ToBuffer(publicKeyBase64));
   const cryptoKey = await crypto.subtle.importKey(
-    "pkcs8",
-    privateKeyBuffer,
+    "jwk",
+    {
+      kty: "EC",
+      crv: "P-256",
+      d: privateKeyBase64,
+      x: bufferToUrlBase64(toBuffer(publicKeyBytes.slice(1, 33))),
+      y: bufferToUrlBase64(toBuffer(publicKeyBytes.slice(33, 65))),
+    },
     { name: "ECDSA", namedCurve: "P-256" },
     false,
     ["sign"],
@@ -287,6 +295,7 @@ export function createWebPushService(
         const jwt = await createVapidJwt(
           audience,
           vapidSubject,
+          vapidPublicKey,
           vapidPrivateKey,
         );
 

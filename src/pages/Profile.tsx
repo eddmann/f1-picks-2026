@@ -11,6 +11,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
+import NotificationSettings from "../components/NotificationSettings";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
@@ -81,6 +82,8 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      <NotificationSettings />
 
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-carbon border border-asphalt rounded-xl p-4 text-center">

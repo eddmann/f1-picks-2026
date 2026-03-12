@@ -16,4 +16,5 @@ export type {
   LeaderboardEntry,
   RaceWithPick,
   RaceStatus,
+  PushSubscriptionData,
 } from "../shared/types";

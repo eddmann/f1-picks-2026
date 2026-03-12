@@ -6,3 +6,5 @@ export * from "./race.repository";
 export * from "./race-result.repository";
 export * from "./user.repository";
 export * from "./session.repository";
+export * from "./push-subscription.repository";
+export * from "./notification-log.repository";

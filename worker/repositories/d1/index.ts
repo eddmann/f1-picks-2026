@@ -6,3 +6,5 @@ export * from "./race.d1";
 export * from "./race-result.d1";
 export * from "./user.d1";
 export * from "./session.d1";
+export * from "./push-subscription.d1";
+export * from "./notification-log.d1";

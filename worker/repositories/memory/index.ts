@@ -6,3 +6,5 @@ export * from "./race.memory";
 export * from "./race-result.memory";
 export * from "./user.memory";
 export * from "./session.memory";
+export * from "./push-subscription.memory";
+export * from "./notification-log.memory";

@@ -3,6 +3,9 @@ import type { User } from "../shared/types";
 export interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
+  VAPID_PUBLIC_KEY: string;
+  VAPID_PRIVATE_KEY: string;
+  VAPID_SUBJECT: string;
 }
 
 export interface AppBindings {

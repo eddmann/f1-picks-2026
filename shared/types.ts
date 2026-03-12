@@ -134,3 +134,11 @@ export interface RaceWithPick extends Race {
     points?: number;
   };
 }
+
+export interface PushSubscriptionData {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}

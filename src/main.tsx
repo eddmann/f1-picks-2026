@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router";
 import { store } from "./store";
 import App from "./App";
+import { registerServiceWorker } from "./lib/push-notifications";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -15,3 +16,5 @@ createRoot(document.getElementById("root")!).render(
     </Provider>
   </StrictMode>,
 );
+
+registerServiceWorker();

@@ -12,6 +12,8 @@ import type {
   RaceResult,
   UserSeasonStats,
 } from "../../shared/types";
+import type { PushSubscriptionRecord } from "../repositories/interfaces/push-subscription.repository";
+import type { NotificationLogRecord } from "../repositories/interfaces/notification-log.repository";
 
 /**
  * In-memory store for test data
@@ -25,6 +27,8 @@ export interface TestStore {
   picks: Pick[];
   raceResults: RaceResult[];
   userSeasonStats: UserSeasonStats[];
+  pushSubscriptions: PushSubscriptionRecord[];
+  notificationLogs: NotificationLogRecord[];
 }
 
 /**
@@ -40,6 +44,8 @@ export function createTestStore(): TestStore {
     picks: [],
     raceResults: [],
     userSeasonStats: [],
+    pushSubscriptions: [],
+    notificationLogs: [],
   };
 }
 
@@ -78,4 +84,8 @@ export function seedTestStore(
   if (data.picks) store.picks.push(...data.picks);
   if (data.raceResults) store.raceResults.push(...data.raceResults);
   if (data.userSeasonStats) store.userSeasonStats.push(...data.userSeasonStats);
+  if (data.pushSubscriptions)
+    store.pushSubscriptions.push(...data.pushSubscriptions);
+  if (data.notificationLogs)
+    store.notificationLogs.push(...data.notificationLogs);
 }

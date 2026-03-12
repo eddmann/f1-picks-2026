@@ -6,6 +6,8 @@ export * from "./race.fixture";
 export * from "./pick.fixture";
 export * from "./race-result.fixture";
 export * from "./user-season-stats.fixture";
+export * from "./push-subscription.fixture";
+export * from "./notification-log.fixture";
 
 // Reset all counters for clean test isolation
 import { resetUserIdCounter } from "./user.fixture";
@@ -16,6 +18,8 @@ import { resetRaceIdCounter } from "./race.fixture";
 import { resetPickIdCounter } from "./pick.fixture";
 import { resetRaceResultIdCounter } from "./race-result.fixture";
 import { resetUserSeasonStatsIdCounter } from "./user-season-stats.fixture";
+import { resetPushSubscriptionIdCounter } from "./push-subscription.fixture";
+import { resetNotificationLogIdCounter } from "./notification-log.fixture";
 
 export function resetAllFixtureCounters(): void {
   resetUserIdCounter();
@@ -26,4 +30,6 @@ export function resetAllFixtureCounters(): void {
   resetPickIdCounter();
   resetRaceResultIdCounter();
   resetUserSeasonStatsIdCounter();
+  resetPushSubscriptionIdCounter();
+  resetNotificationLogIdCounter();
 }

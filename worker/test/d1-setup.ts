@@ -68,6 +68,8 @@ export async function createTestD1Env(): Promise<Env> {
 export async function clearD1Tables(env: Env): Promise<void> {
   // Delete in dependency order (children before parents)
   const tables = [
+    "notification_log",
+    "push_subscriptions",
     "user_season_stats",
     "race_results",
     "picks",

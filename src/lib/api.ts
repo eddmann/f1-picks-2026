@@ -10,6 +10,7 @@ import type {
   RaceResult,
   LoginForm,
   RegisterForm,
+  PushSubscriptionData,
 } from "../types";
 import { AUTH_TOKEN_STORAGE_KEY } from "../../shared/constants";
 
@@ -248,4 +249,55 @@ export async function triggerSync(): Promise<
     return demoApi.triggerSync();
   }
   return fetchApi("/admin/sync-results", { method: "POST" });
+}
+
+export async function getVapidPublicKey(): Promise<
+  ApiResponse<{ vapidPublicKey: string }>
+> {
+  if (DEMO_MODE) {
+    return { data: { vapidPublicKey: "" } };
+  }
+  return fetchApi("/notifications/vapid-key");
+}
+
+export async function subscribeToNotifications(
+  subscription: PushSubscriptionData,
+): Promise<ApiResponse<{ subscription: { id: number } }>> {
+  if (DEMO_MODE) {
+    return { data: { subscription: { id: 1 } } };
+  }
+  return fetchApi("/notifications/subscribe", {
+    method: "POST",
+    body: JSON.stringify(subscription),
+  });
+}
+
+export async function unsubscribeFromNotifications(data: {
+  endpoint: string;
+}): Promise<ApiResponse<{ deleted: boolean }>> {
+  if (DEMO_MODE) {
+    return { data: { deleted: true } };
+  }
+  return fetchApi("/notifications/subscribe", {
+    method: "DELETE",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function sendTestNotification(): Promise<
+  ApiResponse<{ sent: number; failed: number }>
+> {
+  if (DEMO_MODE) {
+    return { data: { sent: 1, failed: 0 } };
+  }
+  return fetchApi("/notifications/test", { method: "POST" });
+}
+
+export async function getNotificationStatus(): Promise<
+  ApiResponse<{ subscribed: boolean; count: number }>
+> {
+  if (DEMO_MODE) {
+    return { data: { subscribed: false, count: 0 } };
+  }
+  return fetchApi("/notifications/status");
 }

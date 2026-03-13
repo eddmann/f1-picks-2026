@@ -65,6 +65,47 @@ Notable DNFs: Piastri (DNS — locked rear axle on formation lap), Hulkenberg (D
 - Drivers used: ALB
 - Drivers remaining: 21
 
+## Round 2 — Chinese Grand Prix (Shanghai, March 13-15) — Sprint Weekend
+
+**Pick: RUS (George Russell) — Mercedes**
+
+**Expected points:** 25.9 (FP1-adjusted) | **Profile:** VARIABLE
+
+### Reasoning
+
+**Bug fix context:** Before this round, we discovered a bug in the notebook — the `EventFormat` filter used `sprint_shootout` instead of `sprint_qualifying`, which meant **all sprint weekend races were missing from historical data** across 2024, 2025, and 2026. This affected Shanghai, Miami, Austin, São Paulo, Qatar, and others. Fixing this expanded the circuit matrix from 19 to 25 circuits and significantly changed the optimizer's allocation.
+
+**What the optimizer said:** With the fix applied and FP1 data loaded, the optimizer recommended **OCO (Ocon) at 19.1 pts** — a BOOM-BUST midfield pick that saves top drivers for their peak circuits. The close calls showed PIA (27.1), RUS (25.9), and ANT (24.9) as alternatives.
+
+**Why we overrode the optimizer with RUS:** Three reasons:
+
+1. **Mercedes early-season dominance:** R1 showed Mercedes are clearly the fastest team — RUS won with a dominant performance, and the model *undervalued* him (predicted 15.4, scored 25). The model assumes static team performance across the season, but in reality Mercedes' advantage will likely shrink as other teams bring upgrades. Using RUS early maximises the value of Mercedes' current edge.
+
+2. **Sprint weekend maximises points ceiling:** Sprint weekends offer points from both the sprint race and the main race. Pairing a dominant car with a sprint weekend gives the best chance of a big haul. RUS at a sprint round while Mercedes are untouchable is the highest-EV play the model can't see.
+
+3. **Acceptable opportunity cost:** The optimizer had RUS saved for Canada R7 (27.5 pts, also a sprint weekend). The paper cost is only 1.6 pts — and if Mercedes' advantage erodes by R7 (likely with development race), the true cost is zero or negative. Canada R7 can be reassigned (e.g. ANT at 19.5 there).
+
+**FP1 data:** RUS showed +7.6 uplift at Shanghai, ranking 2nd behind PIA (20.9). The Mercedes FP1 pace corroborates the R1 dominance story.
+
+**Risk profile:** RUS is VARIABLE (CV 0.50, 10.8% zero-score rate) — far safer than OCO's BOOM-BUST (CV 2.65, ~69% zero-score rate). This is a high-floor, high-ceiling pick.
+
+### Alternatives considered
+- **OCO** (19.1 pts) — optimizer's pick, but BOOM-BUST profile (CV 2.65) makes it a coin flip. Haas had good R1 pace (BEA P7) but trusting Ocon to deliver 19 pts at Shanghai is a big ask.
+- **ANT** (24.9 pts) — other Mercedes driver, +6.9 net gain vs his allocated race (São Paulo R21, 18.0 pts). Strong option but BOOM-BUST profile (42% zero-score rate). Less proven than RUS.
+- **PIA** (27.1 pts) — highest adjusted points at Shanghai, but saved for Miami R6 (32.5 pts). Spending him here costs 5.4 pts season-long.
+- **NOR** (17.3 pts) — CONSISTENT but lower ceiling. Saved for Singapore R18 (24.5 pts).
+
+### Result
+_TBD — update after race_
+
+### Learnings for future rounds
+_TBD — update after race_
+
+**Season tracker:**
+- Points scored: 0 / Expected: 36.2 (cumulative) / Delta: -10.3
+- Drivers used: ALB, RUS
+- Drivers remaining: 20
+
 ---
 
 ## Template

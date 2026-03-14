@@ -67,19 +67,11 @@ export function createDriverWithAvailability(
 
 export function createRace(overrides?: Partial<Race>): Race {
   const id = nextIdWithOverride(overrides?.id);
-  // Default to a race with an open pick window (this week)
+  // Default to a race with an open pick window (quali always 4 hours from now)
   const now = new Date();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - now.getDay() + 1);
-  monday.setHours(0, 0, 0, 0);
 
-  const qualiTime = new Date(monday);
-  qualiTime.setDate(qualiTime.getDate() + 5); // Saturday
-  qualiTime.setHours(15, 0, 0, 0);
-
-  const raceTime = new Date(monday);
-  raceTime.setDate(raceTime.getDate() + 6); // Sunday
-  raceTime.setHours(14, 0, 0, 0);
+  const qualiTime = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+  const raceTime = new Date(now.getTime() + 28 * 60 * 60 * 1000);
 
   return {
     id,

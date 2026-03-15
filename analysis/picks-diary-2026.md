@@ -96,13 +96,51 @@ Notable DNFs: Piastri (DNS — locked rear axle on formation lap), Hulkenberg (D
 - **NOR** (17.3 pts) — CONSISTENT but lower ceiling. Saved for Singapore R18 (24.5 pts).
 
 ### Result
-_TBD — update after race_
+**Actual points: 26** — Sprint P1 (8pts) + Race P2 (18pts). Fastest lap went to Antonelli (no bonus).
+
+Russell won the sprint comfortably, holding off Leclerc by 0.6s after an entertaining battle. In the main race, Antonelli took his maiden F1 victory from pole, with Russell completing another Mercedes 1-2 — the second consecutive of the season. Russell led early but Antonelli was the quicker Mercedes on Sunday, pulling a 5.5s gap.
+
+**Sprint top 8:** RUS P1, LEC P2, HAM P3, NOR P4, ANT P5, PIA P6, LAW P7, BEA P8.
+
+**Race top 10:** ANT P1, RUS P2, HAM P3, LEC P4, BEA P5, GAS P6, LAW P7, HAD P8, SAI P9, COL P10.
+
+**DNFs:** Verstappen (engine failure, 11 laps from end), Alonso (retired), Stroll (retired).
+**DNS:** Norris & Piastri (both electrical failures — McLaren disaster), Bortoleto (Audi), Albon (Williams).
 
 ### Learnings for future rounds
-_TBD — update after race_
+
+**Model calibration:**
+- Predicted 25.9 pts for RUS; actual 26. Near-perfect prediction. The FP1-adjusted model (+7.6 uplift) was accurate for a frontrunning team at a sprint weekend.
+- The override decision to pick RUS over the optimizer's OCO recommendation gained us ~7 points vs the likely OCO outcome (OCO didn't score — Ocon's Haas teammate Bearman got P5 in the race but Ocon likely would have been further back or DNF given the attrition).
+- Key insight: **model predictions for Tier 1 teams are reliable; practice uplifts for backmarkers are not** (R1 Williams lesson confirmed by Albon DNS here).
+
+**2026 pecking order (R2 update):**
+- **Tier 1:** Mercedes (RUS, ANT) — dominant. Two consecutive 1-2 finishes. Russell leads championship. The clear benchmark team.
+- **Tier 2:** Ferrari (HAM, LEC) — consistent P3-P4 finishers in both races. Hamilton's first podium for Ferrari. Solid but ~25s off Mercedes pace.
+- **Tier 2.5:** Haas (BEA) — Bearman P8 sprint, P5 race is very impressive. Best of the rest in the race. Haas are punching well above weight.
+- **Tier 3:** Racing Bulls (LAW) — Lawson scored in both sprint (P7) and race (P7). Consistent points scorer.
+- **Tier 3:** Red Bull (HAD, VER) — Hadjar P8 race, but Verstappen DNF (engine). Red Bull unreliable and off the pace when running.
+- **Midfield:** Alpine (GAS P6 race), Williams (SAI P9 race)
+- **Backmarkers/Unreliable:** McLaren (double DNS), Audi (BOR DNS), Aston Martin (both retired)
+
+**Reliability flags:**
+- **RED FLAG — Red Bull:** Verstappen engine failure R2 + Hadjar engine failure R1. Two engine-related DNFs in two races. Avoid RBR picks until proven reliable.
+- **RED FLAG — McLaren:** Double DNS at Shanghai (both cars electrical). Combined with Piastri DNS at Melbourne, that's 3 non-starts in 4 car-races. Very risky.
+- **AMBER — Aston Martin:** Both Alonso and Stroll retired. Alonso also retired R1. Unreliable.
+- **AMBER — Audi:** Bortoleto DNS (after Hulkenberg DNS R1). Two DNS in two races.
+- **CLEAR — Mercedes:** Perfect reliability. Two 1-2 finishes.
+- **CLEAR — Ferrari:** Perfect reliability. Four points finishes from four starts.
+- **CLEAR — Haas:** Bearman scored in both races. Reliable midfield option.
+
+**Strategic takeaways:**
+- **Override strategy validated:** Picking RUS over the optimizer's OCO gained ~7pts. When the model undervalues a dominant team, human override is correct. Continue to weigh Mercedes picks heavily while their advantage holds.
+- **Sprint weekends + dominant car = maximum value.** RUS at a sprint weekend delivered 26pts. Prioritise remaining sprint weekends for strong picks (Miami R6, Canada R7, British R11, Dutch R14, Singapore R18).
+- **Haas is undervalued.** Bearman consistently in P5-P8 range. The optimizer has BEA for Mexico R20 (12.0 pts) — may be worth more now.
+- **Avoid Red Bull and McLaren** for the near term. Reliability is too poor. The optimizer has VER for Suzuka R3 (25.4 pts) — this is now risky given two engine failures. Consider whether to override.
+- **Next round (R3 Suzuka):** Optimizer recommends VER (25.4 pts). Given Red Bull's reliability issues, this needs careful evaluation with practice data. If VER shows pace but we're worried about DNF risk, may need to override.
 
 **Season tracker:**
-- Points scored: 0 / Expected: 36.2 (cumulative) / Delta: -10.3
+- Points scored: 26 / Expected: 36.2 (cumulative) / Delta: -10.2
 - Drivers used: ALB, RUS
 - Drivers remaining: 20
 

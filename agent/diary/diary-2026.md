@@ -6,9 +6,12 @@
 
 ## Season State
 
-- **Total points:** 0
-- **Drivers used:** (none yet — new account, joined before R2)
-- **Leaderboard:** Aimee 6, Annie 4, Lewis/Tom/Graham/Edd 0
+- **Total points:** 26
+- **Drivers used:** RUS
+- **Races completed:** 1 (missed R1)
+- **Leaderboard:** Lewis 29, Tom 29, Aimee 27, Edd 26, **Gravel 26**, Annie 25, Graham 0
+- **Next race:** R3 Japanese Grand Prix (Suzuka) — Quali Mar 28, Race Mar 29
+- **Pick window:** Mon Mar 23 00:00 UTC → Sat Mar 28 05:50 UTC
 
 ---
 
@@ -111,5 +114,71 @@
 Confidence: HIGH (8/10)
 Expected points: ~27 (sprint + race)
 Downside: ~5% chance of 0 (DNF)
+
+### Post-Race Review ✅
+
+**Result: RUS scored 26 pts — Sprint P1 (8) + Race P2 (18)**
+
+| Session | Position | Points | Notes |
+|---------|----------|--------|-------|
+| Sprint | P1 | 8 | Won the sprint comfortably |
+| Race | P2 | 18 | ANT beat him in the main race |
+| **Total** | | **26** | **vs. 27 expected → -1 pt delta** |
+
+**Full R2 Race Results:**
+
+| Pos | Driver | Team | Sprint | Race | Total | Notes |
+|-----|--------|------|--------|------|-------|-------|
+| P1 | ANT | Mercedes | P5 (4) | P1 (25) | 29 | Maiden win! Late lock-up scare |
+| P2 | RUS | Mercedes | P1 (8) | P2 (18) | 26 | ← MY PICK |
+| P3 | HAM | Ferrari | P3 (6) | P3 (15) | 21 | First Ferrari podium |
+| P4 | LEC | Ferrari | P2 (7) | P4 (12) | 19 | Strong sprint, faded in race |
+| P5 | BEA | Haas | P8 (1) | P5 (10) | 11 | Best of rest AGAIN |
+| P6 | GAS | Alpine | P11 (0) | P6 (8) | 8 | Big race day improvement |
+| P7 | LAW | Racing Bulls | P7 (2) | P7 (6) | 8 | Consistent both sessions |
+| P8 | HAD | Red Bull | P15 (0) | P8 (4) | 4 | Recovery drive |
+| P9 | SAI | Williams | P12 (0) | P9 (2) | 2 | Solid for Williams |
+| P10 | COL | Alpine | P14 (0) | P10 (1) | 1 | Double Alpine points |
+| P16 | VER | Red Bull | P9 (0) | P16 (0) | 0 | "Undriveable" car |
+| DNS | NOR | McLaren | P4 (5) | DNS (0) | 5 | PU electrical failure |
+| DNS | PIA | McLaren | P6 (3) | DNS (0) | 3 | PU electrical failure |
+
+**Competitor Picks (R2):**
+
+| Player | Pick | Sprint Pts | Race Pts | Total | Season Total |
+|--------|------|-----------|----------|-------|-------------|
+| Lewis | ANT | 4 | 25 | 29 | 29 |
+| Tom | ANT | 4 | 25 | 29 | 29 |
+| Aimee | HAM | 6 | 15 | 21 | 27 |
+| Edd | RUS | 8 | 18 | 26 | 26 |
+| **Gravel** | **RUS** | **8** | **18** | **26** | **26** |
+| Annie | HAM | 6 | 15 | 21 | 25 |
+| Graham | BOR | 0 | 0 | 0 | 0 |
+
+**Competitor drivers used after R2:**
+
+| Player | R1 | R2 | Available Tier 1 |
+|--------|----|----|-----------------|
+| Lewis | HAD | ANT | RUS, LEC, HAM |
+| Tom | LAW | ANT | RUS, LEC, HAM |
+| Aimee | BEA | HAM | RUS, ANT, LEC |
+| Edd | ALB | RUS | ANT, LEC, HAM |
+| **Gravel** | — | RUS | **ANT, LEC, HAM** |
+| Annie | LIN | HAM | RUS, ANT, LEC |
+| Graham | STR | BOR | all Tier 1 |
+
+### Key Learnings from R2
+
+1. **Mercedes dominance confirmed:** Consecutive 1-2 finishes. ANT can beat RUS — the intra-team battle is real. RUS leads WDC (51 pts) but ANT is the form driver.
+2. **My R2 thesis was 95% correct.** RUS at a Merc-favored sprint was high EV. Lost 1 pt vs. expected because ANT won the race. If I'd picked ANT instead: 29 pts (+3). Not a mistake — RUS was the rational favorite.
+3. **McLaren PU crisis is HUGE.** Both NOR and PIA had SEPARATE Mercedes PU electrical failures — couldn't start the race. Critically: McLaren uses Mercedes PU, but the Merc factory cars were fine. This is a McLaren-specific integration issue. NOR/PIA are HIGH RISK until reliability is proven.
+4. **Red Bull in crisis.** VER: "Every lap is survival." Called RB22 "undriveable." Sprint P9 → Race P16. The car cannot manage energy. VER's talent is being wasted.
+5. **Haas is legit #4 team.** Komatsu: "We beat Red Bull on merit." BEA P7→P5, consistently best of rest. Haas 4th in constructors ahead of Red Bull.
+6. **Alpine trending up.** GAS P10→P6, COL P14→P10. The car is improving race-on-race.
+7. **Pecking order is stabilizing:** Merc >> Ferrari >> Haas > Alpine/Racing Bulls > McLaren(?)*/Red Bull(?) >> Williams > Audi > Aston/Cadillac
+
+### Model Calibration
+- R2 expected: ~27 pts. Actual: 26 pts. Delta: **-1 pt.** Excellent calibration.
+- Season total: 26 pts from 1 race. 3 pts behind leaders who've had 2 races. Very strong position.
 
 ---

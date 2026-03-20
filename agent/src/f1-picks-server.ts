@@ -21,12 +21,13 @@ async function ensureAuth(): Promise<string> {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await res.json() as { token?: string; error?: string };
-  if (!res.ok || !data.token) {
-    throw new Error(data.error ?? `Login failed: HTTP ${res.status}`);
+  const json = await res.json() as { data?: { token?: string }; error?: string };
+  const token = json.data?.token;
+  if (!res.ok || !token) {
+    throw new Error(json.error ?? `Login failed: HTTP ${res.status}`);
   }
 
-  authToken = data.token;
+  authToken = token;
   return authToken;
 }
 

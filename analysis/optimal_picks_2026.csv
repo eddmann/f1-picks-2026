@@ -1,25 +1,25 @@
 round,race,circuit,driver,driver_name,team,expected_points,is_sprint,is_wildcard,status,consistency,risk_cv
-1,Australian Grand Prix,Melbourne,ALB,Alexander Albon,Williams,6.153846153846153,False,False,COMPLETED,BOOM-BUST,1.6424014852918545
-2,Chinese Grand Prix,Shanghai,RUS,George Russell,Mercedes,16.0,True,False,COMPLETED,VARIABLE,0.5533950016244219
-3,Japanese Grand Prix,Suzuka,PER,Sergio Perez,Cadillac,18.0,False,False,RECOMMENDED,UNKNOWN,1.0
-4,Bahrain Grand Prix,Sakhir,OCO,Esteban Ocon,Haas,2.4615384615384617,False,False,RECOMMENDED,BOOM-BUST,2.0797886511213908
-5,Saudi Arabian Grand Prix,Jeddah,COL,Franco Colapinto,Alpine,7.44930077016618,False,False,RECOMMENDED,BOOM-BUST,inf
-6,Miami Grand Prix,Miami Gardens,PIA,Oscar Piastri,McLaren,32.5,True,False,RECOMMENDED,VARIABLE,0.5796857293564013
-7,Canadian Grand Prix,Montréal,ANT,Kimi Antonelli,Mercedes,19.5,True,False,RECOMMENDED,BOOM-BUST,1.0664250934178057
-8,Monaco Grand Prix,Monte Carlo,BOT,Valtteri Bottas,Cadillac,1.1846430019109278,False,False,RECOMMENDED,UNKNOWN,1.0
-9,Barcelona Grand Prix,Barcelona,GAS,Pierre Gasly,Alpine,4.0,False,False,RECOMMENDED,BOOM-BUST,2.623260968649675
-10,Austrian Grand Prix,Spielberg,LAW,Liam Lawson,Racing Bulls,8.0,False,False,RECOMMENDED,BOOM-BUST,1.8240039047353882
-11,British Grand Prix,Silverstone,HUL,Nico Hulkenberg,Audi,19.5,True,False,RECOMMENDED,BOOM-BUST,1.9993749023132206
-12,Belgian Grand Prix,Spa-Francorchamps,LEC,Charles Leclerc,Ferrari,15.0,False,False,RECOMMENDED,VARIABLE,0.6055798329160461
-13,Hungarian Grand Prix,Budapest,STR,Lance Stroll,Aston Martin,6.000000000000001,False,False,RECOMMENDED,BOOM-BUST,1.835745511508432
-14,Dutch Grand Prix,Zandvoort,HAD,Isack Hadjar,Red Bull Racing,19.5,True,False,RECOMMENDED,BOOM-BUST,1.801101112484056
-15,Italian Grand Prix,Monza,BOR,Gabriel Bortoleto,Audi,4.0,False,False,RECOMMENDED,BOOM-BUST,2.4419553335180533
-16,Spanish Grand Prix,Madrid,LIN,Arvid Lindblad,Racing Bulls,3.831588395390579,False,False,RECOMMENDED,UNKNOWN,1.0
-17,Azerbaijan Grand Prix,Baku,SAI,Carlos Sainz,Williams,15.0,False,False,RECOMMENDED,BOOM-BUST,1.4205740269337346
-18,Singapore Grand Prix,Marina Bay,ALO,Fernando Alonso,Aston Martin,7.800000000000002,True,False,RECOMMENDED,BOOM-BUST,1.2320215849277107
-19,United States Grand Prix,Austin,HAM,Lewis Hamilton,Ferrari,12.000000000000002,False,False,RECOMMENDED,VARIABLE,0.7490812252851562
-20,Mexico City Grand Prix,Mexico City,BEA,Oliver Bearman,Haas,12.000000000000002,False,False,RECOMMENDED,BOOM-BUST,1.80733530517992
-21,São Paulo Grand Prix,São Paulo,NOR,Lando Norris,McLaren,25.0,False,False,RECOMMENDED,CONSISTENT,0.48131540568697617
-22,Las Vegas Grand Prix,Las Vegas,VER,Max Verstappen,Red Bull Racing,25.0,False,False,RECOMMENDED,CONSISTENT,0.4948062462766465
-23,Qatar Grand Prix,Lusail,VER,Max Verstappen,Red Bull Racing,25.0,False,True,WILDCARD,CONSISTENT,0.4948062462766465
-24,Abu Dhabi Grand Prix,Yas Marina,VER,Max Verstappen,Red Bull Racing,16.64923076923077,False,True,WILDCARD,CONSISTENT,0.4948062462766465
+1,Australian Grand Prix,Melbourne,ALB,Alexander Albon,Williams,3.4782608695652177,False,False,COMPLETED,BOOM-BUST,1.9035044431517674
+2,Chinese Grand Prix,Shanghai,RUS,George Russell,Mercedes,19.217391304347828,True,False,COMPLETED,VARIABLE,0.5925438255602431
+3,Japanese Grand Prix,Suzuka,BOR,Gabriel Bortoleto,Audi,13.588792636708181,False,False,COMPLETED,BOOM-BUST,2.3233801320694893
+4,Bahrain Grand Prix,Sakhir,PER,Sergio Perez,Cadillac,18.0,False,False,RECOMMENDED,BOOM-BUST,1.179329069954818
+5,Saudi Arabian Grand Prix,Jeddah,COL,Franco Colapinto,Alpine,7.44930077016618,False,False,RECOMMENDED,BOOM-BUST,3.7392703642746747
+6,Miami Grand Prix,Miami Gardens,PIA,Oscar Piastri,McLaren,32.5,True,False,RECOMMENDED,VARIABLE,0.6264267780676547
+7,Canadian Grand Prix,Montréal,VER,Max Verstappen,Red Bull Racing,26.9,True,False,RECOMMENDED,VARIABLE,0.5159282417858527
+8,Monaco Grand Prix,Monte Carlo,LIN,Arvid Lindblad,Racing Bulls,4.179845067421477,False,False,RECOMMENDED,UNKNOWN,1.0
+9,Barcelona Grand Prix,Barcelona,GAS,Pierre Gasly,Alpine,3.230769230769231,False,False,RECOMMENDED,BOOM-BUST,2.2293532092426327
+10,Austrian Grand Prix,Spielberg,ALO,Fernando Alonso,Aston Martin,3.6923076923076925,False,False,RECOMMENDED,BOOM-BUST,1.312288057469508
+11,British Grand Prix,Silverstone,HUL,Nico Hulkenberg,Audi,16.0,True,False,RECOMMENDED,BOOM-BUST,1.7980483012571602
+12,Belgian Grand Prix,Spa-Francorchamps,HAM,Lewis Hamilton,Ferrari,13.307692307692308,False,False,RECOMMENDED,VARIABLE,0.8334406798240823
+13,Hungarian Grand Prix,Budapest,STR,Lance Stroll,Aston Martin,4.0769230769230775,False,False,RECOMMENDED,BOOM-BUST,2.1586361113352464
+14,Dutch Grand Prix,Zandvoort,HAD,Isack Hadjar,Red Bull Racing,19.5,True,False,RECOMMENDED,BOOM-BUST,1.7541954412466516
+15,Italian Grand Prix,Monza,BOT,Valtteri Bottas,Cadillac,0.0,False,False,RECOMMENDED,BOOM-BUST,inf
+16,Spanish Grand Prix,Madrid,OCO,Esteban Ocon,Haas,1.4457257452653027,False,False,RECOMMENDED,BOOM-BUST,2.6805052207433473
+17,Azerbaijan Grand Prix,Baku,LAW,Liam Lawson,Racing Bulls,10.0,False,False,RECOMMENDED,BOOM-BUST,1.7920573467526586
+18,Singapore Grand Prix,Marina Bay,NOR,Lando Norris,McLaren,24.5,True,False,RECOMMENDED,VARIABLE,0.5230283178848794
+19,United States Grand Prix,Austin,LEC,Charles Leclerc,Ferrari,18.846153846153847,False,False,RECOMMENDED,VARIABLE,0.5709806369595821
+20,Mexico City Grand Prix,Mexico City,BEA,Oliver Bearman,Haas,12.000000000000002,False,False,RECOMMENDED,BOOM-BUST,1.6285987468988414
+21,São Paulo Grand Prix,São Paulo,ANT,Kimi Antonelli,Mercedes,18.0,False,False,RECOMMENDED,BOOM-BUST,1.0603265474960215
+22,Las Vegas Grand Prix,Las Vegas,SAI,Carlos Sainz,Williams,11.923076923076923,False,False,RECOMMENDED,BOOM-BUST,1.1143109234727036
+23,Qatar Grand Prix,Lusail,VER,Max Verstappen,Red Bull Racing,25.0,False,True,WILDCARD,VARIABLE,0.5159282417858527
+24,Abu Dhabi Grand Prix,Yas Marina,NOR,Lando Norris,McLaren,15.606815912272095,False,True,WILDCARD,VARIABLE,0.5230283178848794

@@ -144,6 +144,35 @@ Russell won the sprint comfortably, holding off Leclerc by 0.6s after an enterta
 - Drivers used: ALB, RUS
 - Drivers remaining: 20
 
+## Round 3 — Japanese Grand Prix (Suzuka, March 27)
+
+**Pick: BOR (Gabriel Bortoleto) — Audi**
+
+**Expected points:** 13.6 (FP1+FP2+FP3 adjusted) | **Profile:** BOOM-BUST (CV 2.32)
+
+### Reasoning
+
+**What the optimizer said:** With all three FP sessions loaded (1512 laps), the optimizer moved VER off Suzuka (base 25.4 dropped to 12.9 after poor practice, -12.5) and reassigned him to Canada R7 (26.9, sprint). The optimizer picked BOR at 13.6 — a midfield value play that saves all top drivers for higher-value races.
+
+**FP data story (FP1+FP2+FP3):** Piastri and Norris tied at the top (20.7 pts each) — McLaren looked strong across all three sessions, with PIA gaining the most from FP3. Lindblad emerged at 16.2 (+12.4) after a strong FP3 showing from Racing Bulls. Russell (16.0) and Hamilton (15.9) rounded out the top five. Bortoleto held steady at 13.6 (+13.6 from a ~0 base) — Audi's practice pace was consistent across all sessions. Verstappen continued to struggle, dropping further to 12.9 (-12.5). Leclerc also faded in FP3, down to 12.7. Antonelli dropped from 16.5 (FP1+FP2) to 13.4 after a weaker FP3.
+
+**Why trust the optimizer over an override:** The season-long math favours saving PIA for Miami R6 (32.5, sprint), NOR for Singapore R18 (24.5, sprint), and LEC for Austin R19 (18.8). BOR at 13.6 is the optimizer's best remaining option that doesn't cannibalise a bigger future pick. The closest override would be HAM (15.9 pts) at a season cost of only -2.6 pts vs his Spa R12 allocation (13.3), but the optimizer still prefers preserving the full allocation.
+
+**Risk acknowledged:** BOR is BOOM-BUST with all value from FP uplift — the same profile as ALB at R1 (which scored 0). Audi also has AMBER reliability (HUL DNS R1, BOR DNS R2). This is a known risk we're accepting to preserve the season-long allocation.
+
+### Alternatives considered
+- **PIA** (20.7 pts) — tied top after FP3, VARIABLE, but saved for Miami R6 (32.5 sprint). Override costs 11.8 pts season-long. McLaren reliability RED FLAG (3 non-starts in 4 car-races).
+- **NOR** (20.7 pts) — tied top, VARIABLE, but saved for Singapore R18 (24.5 sprint). Override costs 3.8 pts season-long.
+- **LIN** (16.2 pts) — strong FP3 debut pace, UNKNOWN profile. Optimizer has him at Monza R15 (3.8 pts) so cheap override, but untested consistency.
+- **HAM** (15.9 pts) — VARIABLE, Ferrari Tier 2 reliable. Cheapest meaningful override (-2.6 cost vs Spa R12). Strongest safe alternative.
+- **VER** (12.9 pts) — historically strong at Suzuka but terrible FP pace (-12.5) and Red Bull reliability RED FLAG (two engine failures in two races).
+
+### Result
+_TBD — update after race_
+
+### Learnings for future rounds
+_TBD — update after race_
+
 ---
 
 ## Template

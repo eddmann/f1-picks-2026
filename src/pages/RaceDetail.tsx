@@ -153,8 +153,8 @@ export default function RaceDetail() {
             <>
               <div
                 className={`
-                grid gap-4 px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400
-                ${race.has_sprint ? "grid-cols-[50px_1fr_80px_80px_80px]" : "grid-cols-[50px_1fr_80px_80px]"}
+                grid gap-2 md:gap-4 px-3 md:px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400
+                ${race.has_sprint ? "grid-cols-[36px_1fr_50px_50px_50px] md:grid-cols-[50px_1fr_80px_80px_80px]" : "grid-cols-[36px_1fr_55px_55px] md:grid-cols-[50px_1fr_80px_80px]"}
               `}
               >
                 <div>Pos</div>
@@ -169,8 +169,8 @@ export default function RaceDetail() {
                   <div
                     key={result.id}
                     className={`
-                      grid gap-4 px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
-                      ${race.has_sprint ? "grid-cols-[50px_1fr_80px_80px_80px]" : "grid-cols-[50px_1fr_80px_80px]"}
+                      grid gap-2 md:gap-4 px-3 md:px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
+                      ${race.has_sprint ? "grid-cols-[36px_1fr_50px_50px_50px] md:grid-cols-[50px_1fr_80px_80px_80px]" : "grid-cols-[36px_1fr_55px_55px] md:grid-cols-[50px_1fr_80px_80px]"}
                       ${index < 5 ? `animate-slide-up stagger-${index + 1}` : ""}
                     `}
                   >
@@ -188,16 +188,16 @@ export default function RaceDetail() {
                       )}
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0">
                       <div
-                        className="w-1 h-8 rounded-full"
+                        className="w-1 h-8 rounded-full shrink-0"
                         style={{ backgroundColor: result.driver?.team_color }}
                       />
-                      <div>
-                        <p className="font-medium text-white">
+                      <div className="min-w-0">
+                        <p className="font-medium text-white truncate">
                           {result.driver?.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 truncate">
                           {result.driver?.team}
                         </p>
                       </div>
@@ -233,7 +233,7 @@ export default function RaceDetail() {
           ) : (
             <>
               <div
-                className={`grid gap-4 px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400 ${hasResults ? "grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}`}
+                className={`grid gap-2 md:gap-4 px-3 md:px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400 ${hasResults ? "grid-cols-[1fr_1fr_60px] md:grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}`}
               >
                 <div>Player</div>
                 <div>Pick</div>
@@ -245,8 +245,8 @@ export default function RaceDetail() {
                   <div
                     key={pick.id}
                     className={`
-                      grid gap-4 px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
-                      ${hasResults ? "grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}
+                      grid gap-2 md:gap-4 px-3 md:px-5 py-3.5 items-center hover:bg-carbon-light transition-colors
+                      ${hasResults ? "grid-cols-[1fr_1fr_60px] md:grid-cols-[1fr_1fr_80px]" : "grid-cols-[1fr_1fr]"}
                       ${index < 5 ? `animate-slide-up stagger-${index + 1}` : ""}
                     `}
                   >

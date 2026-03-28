@@ -48,7 +48,7 @@ export default function Leaderboard() {
         </div>
       ) : (
         <div className="bg-carbon border border-asphalt rounded-xl overflow-hidden">
-          <div className="grid grid-cols-[60px_1fr_80px_100px] gap-4 px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400">
+          <div className="grid grid-cols-[40px_1fr_50px_70px] md:grid-cols-[60px_1fr_80px_100px] gap-3 md:gap-4 px-3 md:px-5 py-3 border-b border-asphalt bg-carbon-light text-sm font-medium text-gray-400">
             <div>Pos</div>
             <div>Player</div>
             <div className="text-right">Races</div>
@@ -64,7 +64,7 @@ export default function Leaderboard() {
                 <div
                   key={entry.user_id}
                   className={`
-                    grid grid-cols-[60px_1fr_80px_100px] gap-4 px-5 py-4 items-center
+                    grid grid-cols-[40px_1fr_50px_70px] md:grid-cols-[60px_1fr_80px_100px] gap-3 md:gap-4 px-3 md:px-5 py-4 items-center
                     transition-colors
                     ${isCurrentUser ? "bg-f1-red/10" : "hover:bg-carbon-light"}
                     ${index < 5 ? `animate-slide-up stagger-${index + 1}` : ""}

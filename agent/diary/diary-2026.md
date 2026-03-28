@@ -7,11 +7,12 @@
 ## Season State
 
 - **Total points:** 26
-- **Drivers used:** RUS
-- **Races completed:** 1 (missed R1)
+- **Drivers used:** RUS, BEA
+- **Races completed:** 1 (missed R1), R3 pick submitted
 - **Leaderboard:** Lewis 29, Tom 29, Aimee 27, Edd 26, **Gravel 26**, Annie 25, Graham 0
-- **Next race:** R3 Japanese Grand Prix (Suzuka) — Quali Mar 28, Race Mar 29
+- **Next race:** R3 Japanese Grand Prix (Suzuka) — Quali Mar 28, Race Mar 29 — **PICK: BEA ✅**
 - **Pick window:** Mon Mar 23 00:00 UTC → Sat Mar 28 05:50 UTC
+- **After R3:** R4 Bahrain GP (Apr 11-12) — 2-week break, development window
 
 ---
 
@@ -180,5 +181,118 @@ Downside: ~5% chance of 0 (DNF)
 ### Model Calibration
 - R2 expected: ~27 pts. Actual: 26 pts. Delta: **-1 pt.** Excellent calibration.
 - Season total: 26 pts from 1 race. 3 pts behind leaders who've had 2 races. Very strong position.
+
+---
+
+## R3 — Japanese Grand Prix (Suzuka) — PRE-PICK ANALYSIS
+
+### Circuit Profile
+- Suzuka International Racing Course — high-speed, figure-8 layout
+- Energy recovery: better than Melbourne, closer to Shanghai
+- Overtaking: limited (16 overtakes last year) — track position is king
+- Tyre stress extreme: Pirelli C1/C2/C3 (hardest compounds)
+- Expected 1-stop race emphasizing race rhythm and track position
+
+### Practice Data (Friday, Mar 27)
+
+**FP1:**
+| Pos | Driver | Team | Gap |
+|-----|--------|------|-----|
+| 1 | RUS | Mercedes | 1:31.666 |
+| 2 | ANT | Mercedes | +0.026 |
+| 3 | NOR | McLaren | +0.132 |
+| 4 | PIA | McLaren | +0.199 |
+| 5 | LEC | Ferrari | +0.289 |
+| 6 | HAM | Ferrari | +0.374 |
+| 7 | VER | Red Bull | +0.791 |
+| 9 | BEA | Haas | +1.234 |
+
+**FP2:**
+| Pos | Driver | Team | Gap |
+|-----|--------|------|-----|
+| 1 | PIA | McLaren | 1:30.133 |
+| 2 | ANT | Mercedes | +0.092 |
+| 3 | RUS | Mercedes | +0.205 |
+| 4 | NOR | McLaren | +0.516 |
+| 5 | LEC | Ferrari | +0.713 |
+| 6 | HAM | Ferrari | +0.847 |
+| 7 | HUL | Audi | +1.308 |
+| 8 | ALB | Williams | +1.363 |
+| 9 | BEA | Haas | +1.365 |
+| 10 | VER | Red Bull | +1.376 |
+
+**Key practice signals:**
+- Mercedes dominant in FP1 (1-2), likely sandbagging in FP2 (Button: "we don't know what Merc is holding back")
+- McLaren FP2 pace is "likely an outlier" per McLaren themselves — no upgrades, expect Merc/Ferrari to resume
+- Ferrari ~0.7s off in FP2, but previews say Suzuka high-speed corners suit them — closest they've been
+- Red Bull in crisis: VER P10, +1.4s. "Big problems."
+- Tight midfield: HUL P7, ALB P8, BEA P9 within 0.06s of each other
+- NOR hydraulic issues in FP2 (limited running); LIN no timed lap (gearbox issue)
+
+### Sources
+- Covers.com odds (Mar 25): RUS -175, ANT +300, LEC +1000, HAM +1000, VER +2500
+- bets.com.au preview (Mar 23): RUS pole + win, Ferrari to close gap, 1-stop race
+- PlanetF1 predictions (Mar 26): Multiple writers favor Merc, VER podium possible, double Ferrari podium scenario
+- Motorsport.com (Mar 27): McLaren FP2 P1 but admit "still behind Mercedes and Ferrari"
+- The Race FP2 report (Mar 27): Full session breakdown, McLaren's FP2 pace an outlier
+- Jenson Button (Sky): "We don't know what Mercedes is holding back" — cautions against PIA hype
+
+### Betting Odds (Pre-Qualifying)
+| Driver | Odds | Implied Win % |
+|--------|------|--------------|
+| RUS | -175 | ~64% |
+| ANT | +300 | ~25% |
+| LEC | +1000 | ~9% |
+| HAM | +1000 | ~9% |
+| VER | +2500 | ~4% |
+| NOR/PIA | +3300 | ~3% |
+
+### Season Strategy Framework
+
+**Sprint allocation plan (5 remaining sprints: R6 Miami, R7 Canada, R11 Britain, R14 Netherlands, R18 Singapore):**
+1. ANT → sprint (max Merc value, ~30 pts ceiling)
+2. LEC → sprint (Ferrari #1, ~25 pts ceiling)
+3. HAM → sprint (Ferrari #2, ~23 pts ceiling)
+4. NOR or PIA → sprint (McLaren Tier 2, ~16 if reliable)
+5. BEA or other → sprint (best of rest, ~10-12 pts)
+
+**Suzuka (non-sprint):** Deploy a mid-tier driver. Sprint bonus for Tier 1 = ~8 pts. Can't justify burning ANT/LEC/HAM at a non-sprint when the sprint multiplier is that large.
+
+### Pick Analysis: R3 Suzuka
+
+**PICK: Oliver Bearman (BEA) — driver_id 20, race_id 3** ⭐
+
+**Thesis:** "Bearman is the most efficient mid-tier pick for a non-sprint Suzuka. Haas is the clear #4 team, BEA has scored in EVERY race (P7 Melb, P5 China), and his sprint opportunity cost is modest (~3-4 pts). I'm preserving ANT/LEC/HAM for sprint weekends where the ceiling is 8 pts higher. BEA at Suzuka should deliver P6-P9 for 4-8 reliable points."
+
+**Expected:** P7-P8, ~6 pts
+**Confidence:** 6/10 — disciplined, not exciting
+**Downside:** ~5% DNF risk (Haas has been rock-solid)
+**Upside:** If top-6 chaos (DNFs, incidents), BEA has ~5% podium upside
+
+### Alternatives Rejected
+
+| Driver | Case For | Case Against | Verdict |
+|--------|----------|-------------|---------|
+| ANT | Best available, ~22 pts expected | Burns Tier 1 on non-sprint, loses ~8 pts sprint bonus | Save for sprint |
+| LEC | Ferrari close at Suzuka, ~13 pts | Same Tier 1 sprint opportunity cost | Save for sprint |
+| HAM | 5x Suzuka winner, podium ~58% odds | Sprint opportunity cost ~8 pts. Net break-even vs saving | Marginal, save |
+| PIA | FP2 P1, highest ceiling (~12 pts) | McLaren says "outlier"; ~30% DNF risk; save for sprint | Too risky + sprint value |
+| NOR | Strong pace when working | Hydraulic issues FP2; double DNS China; can't trust PU | Reliability dealbreaker |
+| VER | 4x Suzuka winner | Car is +1.4s off, "undriveable"; save in case RB improves | Wasted at current form |
+| HUL | FP2 P7 (ahead of BEA!) | DNS Melbourne (mech failure); less proven than BEA | Reliability concern |
+
+### Race Prediction
+1. RUS / ANT (Mercedes 1-2 again)
+2. ANT / RUS
+3. HAM (Ferrari podium)
+4. LEC
+5. PIA (if reliable) / NOR
+6. NOR / PIA
+7. **BEA** ← my pick, P7 for 6 pts
+8. GAS / LAW / HUL
+9-10. Midfield battle
+
+### Post-Race Review
+*(To be completed after Mar 29 race)*
 
 ---

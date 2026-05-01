@@ -1,6 +1,15 @@
 -- Add cancelled race status and mark cancelled 2026 rounds.
+--
+-- D1-safe table rebuild: D1 silently ignores `PRAGMA foreign_keys = OFF`,
+-- so dropping `races` cascades through `picks` and `race_results`. We work
+-- around it by snapshotting FK-bearing rows to backup tables, emptying the
+-- originals so DROP has nothing to cascade through, then restoring.
 
-PRAGMA foreign_keys = OFF;
+CREATE TABLE picks_backup AS SELECT * FROM picks;
+CREATE TABLE race_results_backup AS SELECT * FROM race_results;
+
+DELETE FROM picks;
+DELETE FROM race_results;
 
 CREATE TABLE races_new (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,6 +73,12 @@ CREATE INDEX idx_races_round ON races(round);
 CREATE INDEX idx_races_status ON races(status);
 CREATE INDEX idx_races_quali_time ON races(quali_time);
 
+INSERT INTO picks SELECT * FROM picks_backup;
+INSERT INTO race_results SELECT * FROM race_results_backup;
+
+DROP TABLE picks_backup;
+DROP TABLE race_results_backup;
+
 UPDATE races
 SET status = 'cancelled'
 WHERE season_id = (SELECT id FROM seasons WHERE year = 2026)
@@ -98,5 +113,3 @@ SET
       AND r.status = 'completed'
   )
 WHERE season_id = (SELECT id FROM seasons WHERE year = 2026);
-
-PRAGMA foreign_keys = ON;

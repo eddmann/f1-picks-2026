@@ -56,5 +56,11 @@ export function createMemoryRaceResultRepository(
       store.raceResults.push(newResult);
       return newResult;
     },
+
+    async deleteByRaceId(raceId: number): Promise<void> {
+      store.raceResults = store.raceResults.filter(
+        (result) => result.race_id !== raceId,
+      );
+    },
   };
 }

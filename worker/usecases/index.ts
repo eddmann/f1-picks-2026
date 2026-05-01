@@ -52,6 +52,12 @@ export {
   type ResultInput,
 } from "./submit-race-results-manual.usecase";
 export {
+  cancelRace,
+  type CancelRaceDeps,
+  type CancelRaceInput,
+  type CancelRaceResult,
+} from "./cancel-race.usecase";
+export {
   syncRaceResults,
   type SyncRaceResultsDeps,
   type SyncRaceResultsResult,

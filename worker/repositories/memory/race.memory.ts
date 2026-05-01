@@ -26,10 +26,8 @@ export function createMemoryRaceRepository(store: TestStore): RaceRepository {
 
       if (upcoming) return upcoming;
 
-      // If no upcoming, return the last race
-      return seasonRaces.length > 0
-        ? seasonRaces[seasonRaces.length - 1]
-        : null;
+      // If no upcoming races remain, return the most recent completed race.
+      return seasonRaces.filter((r) => r.status === "completed").at(-1) ?? null;
     },
 
     async updateStatus(raceId: number, status: RaceStatus): Promise<void> {

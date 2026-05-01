@@ -13,6 +13,8 @@ import { createD1UserStatsRepository } from "../repositories/d1/user-stats.d1";
 import { errorToHttpStatus, errorToMessage } from "../usecases/errors";
 import { syncRaceResults } from "../usecases/sync-race-results.usecase";
 import { OpenF1ResultsFetcher } from "../services/openf1-results-fetcher";
+import { cancelRace } from "../usecases/cancel-race.usecase";
+import { convertRace } from "../utils/transforms";
 
 const admin = new Hono<AppBindings>();
 
@@ -65,6 +67,36 @@ admin.post(
     });
   },
 );
+
+admin.post("/races/:id/cancel", async (c) => {
+  const raceId = parseInt(c.req.param("id"), 10);
+
+  const result = await cancelRace(
+    {
+      seasonRepository: createD1SeasonRepository(c.env),
+      raceRepository: createD1RaceRepository(c.env),
+      raceResultRepository: createD1RaceResultRepository(c.env),
+      pickRepository: createD1PickRepository(c.env),
+      userStatsRepository: createD1UserStatsRepository(c.env),
+    },
+    {
+      raceId,
+    },
+  );
+
+  if (!result.ok) {
+    return c.json(
+      { error: errorToMessage(result.error) },
+      errorToHttpStatus(result.error),
+    );
+  }
+
+  return c.json({
+    data: {
+      race: convertRace(result.value.race),
+    },
+  });
+});
 
 admin.post("/sync-results", async (c) => {
   const syncResult = await syncRaceResults({

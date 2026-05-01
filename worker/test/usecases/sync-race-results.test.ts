@@ -167,6 +167,43 @@ describe("syncRaceResults", () => {
     expect(store.races[0].status).toBe("completed");
   });
 
+  test("skips races that were cancelled", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1, isActive: true });
+    const race = createRace({
+      id: 1,
+      seasonId: 1,
+      status: "cancelled",
+      qualiTime: "2026-03-07T15:00:00Z",
+      raceTime: "2026-03-08T14:00:00Z",
+    });
+
+    seedTestStore(store, {
+      seasons: [season],
+      races: [race],
+    });
+
+    let calls = 0;
+    const f1ResultsFetcher = {
+      async fetchResults() {
+        calls += 1;
+        return { ok: true as const, results: [] };
+      },
+    };
+
+    const result = await syncRaceResults({
+      ...createDeps(store),
+      f1ResultsFetcher,
+      clock: { now: () => new Date("2026-03-08T20:00:00Z") },
+    });
+
+    expect(result.started).toBe(0);
+    expect(result.synced.length).toBe(0);
+    expect(result.failed.length).toBe(0);
+    expect(calls).toBe(0);
+    expect(store.races[0].status).toBe("cancelled");
+  });
+
   test("records failure when fetcher returns ok: false", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1, isActive: true });

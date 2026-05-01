@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router";
 import { getCountryFlag, formatDateTime } from "../lib/utils";
 import * as api from "../lib/api";
 import type { Race, Driver, RaceResult, PickWithDetails } from "../types";
-import { ArrowLeft, Trophy, Zap } from "lucide-react";
+import { ArrowLeft, Trophy, Zap, Ban } from "lucide-react";
 
 interface RaceResultWithDriver extends RaceResult {
   driver: Driver | null;
@@ -66,6 +66,7 @@ export default function RaceDetail() {
   }
 
   const hasResults = results.length > 0;
+  const isCancelled = race.status === "cancelled";
   const defaultTab = hasResults ? "results" : "picks";
   const activeTab = tabOverride ?? defaultTab;
   const sortedPicks = hasResults
@@ -109,8 +110,21 @@ export default function RaceDetail() {
               Sprint Weekend
             </div>
           )}
+          {isCancelled && (
+            <div className="mt-4 inline-flex items-center gap-1.5 bg-gray-500/20 text-gray-300 text-xs px-3 py-1.5 rounded-lg border border-gray-500/30">
+              <Ban className="h-3 w-3" />
+              Cancelled
+            </div>
+          )}
         </div>
       </div>
+
+      {isCancelled && (
+        <div className="bg-carbon border border-asphalt rounded-xl p-5 text-gray-400 flex items-center gap-3">
+          <Ban className="h-5 w-5 text-gray-500" />
+          <span>This race was cancelled. Picks and results do not count.</span>
+        </div>
+      )}
 
       {hasResults && (
         <div className="flex gap-2">

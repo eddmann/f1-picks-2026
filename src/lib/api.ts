@@ -236,6 +236,17 @@ export async function submitRaceResults(
   });
 }
 
+export async function cancelRace(
+  raceId: number,
+): Promise<ApiResponse<{ race: Race }>> {
+  if (DEMO_MODE) {
+    return { error: "Race cancellation is unavailable in demo mode" };
+  }
+  return fetchApi(`/admin/races/${raceId}/cancel`, {
+    method: "POST",
+  });
+}
+
 export async function triggerSync(): Promise<
   ApiResponse<{
     status: string;

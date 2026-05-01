@@ -54,10 +54,13 @@ export async function getRaceResults(
   }
 
   const windowStatus = getPickWindowStatus(race, input.now);
-  const picksVisible = windowStatus.status === "locked";
+  const picksVisible =
+    race.status === "cancelled" || windowStatus.status === "locked";
 
   const [results, picks] = await Promise.all([
-    deps.raceResultRepository.getByRaceId(input.raceId),
+    race.status === "cancelled"
+      ? Promise.resolve([])
+      : deps.raceResultRepository.getByRaceId(input.raceId),
     picksVisible
       ? deps.pickRepository.getForRace(input.raceId)
       : Promise.resolve([]),

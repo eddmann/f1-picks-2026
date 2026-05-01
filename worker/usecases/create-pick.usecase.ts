@@ -62,6 +62,10 @@ export async function createPick(
     );
   }
 
+  if (race.status === "cancelled") {
+    return err(validationError("Race was cancelled", "race_id"));
+  }
+
   const raceForWindow: RaceForPickWindow = {
     quali_time: race.quali_time,
     sprint_quali_time: race.sprint_quali_time,

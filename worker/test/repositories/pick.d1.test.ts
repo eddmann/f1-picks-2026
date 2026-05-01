@@ -176,6 +176,18 @@ describe("D1 PickRepository", () => {
       expect(usedIds).toEqual([1]);
     });
 
+    test("excludes cancelled races", async () => {
+      await env.DB.prepare(
+        "UPDATE races SET status = 'cancelled' WHERE id = 1",
+      ).run();
+      await repo.create(1, 1, 1);
+      await repo.create(1, 2, 2);
+
+      const usedIds = await repo.getUsedDriverIds(1, 1);
+
+      expect(usedIds).toEqual([2]);
+    });
+
     test("returns distinct driver ids", async () => {
       await repo.create(1, 1, 1);
       await repo.create(1, 2, 1); // Same driver in different race

@@ -184,6 +184,30 @@ describe("submitRaceResultsManual", () => {
     }
   });
 
+  test("returns VALIDATION_ERROR for cancelled race", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1 });
+    const race = createRace({ id: 1, seasonId: 1, status: "cancelled" });
+    const driver = createDriver({ id: 1, seasonId: 1 });
+
+    seedTestStore(store, {
+      seasons: [season],
+      races: [race],
+      drivers: [driver],
+    });
+
+    const result = await submitRaceResultsManual(createDeps(store), {
+      raceId: 1,
+      results: [{ driver_id: 1, race_position: 1 }],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error.code).toBe("VALIDATION_ERROR");
+      expect(result.error.message).toBe("Race was cancelled");
+    }
+  });
+
   test("returns VALIDATION_ERROR for invalid driver ID", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1 });

@@ -9,6 +9,7 @@ import {
   createSeason,
   createRace,
   createRaces,
+  createCancelledRace,
   createCompletedRace,
   resetAllFixtureCounters,
 } from "../fixtures";
@@ -102,6 +103,28 @@ describe("getCurrentRace", () => {
     }
   });
 
+  test("skips cancelled races when selecting the current race", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1, year: 2026 });
+    const races = [
+      createCompletedRace({ id: 1, seasonId: 1, round: 1 }),
+      createCancelledRace({ id: 2, seasonId: 1, round: 2 }),
+      createRace({ id: 3, seasonId: 1, round: 3, status: "upcoming" }),
+    ];
+
+    seedTestStore(store, { seasons: [season], races });
+
+    const seasonRepository = createMemorySeasonRepository(store);
+    const raceRepository = createMemoryRaceRepository(store);
+
+    const result = await getCurrentRace({ seasonRepository, raceRepository });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.race.id).toBe(3);
+    }
+  });
+
   test("returns in_progress race over upcoming", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1, year: 2026 });
@@ -145,6 +168,28 @@ describe("getCurrentRace", () => {
     if (result.ok) {
       expect(result.value.race.id).toBe(3);
       expect(result.value.race.round).toBe(3);
+    }
+  });
+
+  test("returns last completed race when later races are cancelled", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1, year: 2026 });
+    const races = [
+      createCompletedRace({ id: 1, seasonId: 1, round: 1 }),
+      createCompletedRace({ id: 2, seasonId: 1, round: 2 }),
+      createCancelledRace({ id: 3, seasonId: 1, round: 3 }),
+    ];
+
+    seedTestStore(store, { seasons: [season], races });
+
+    const seasonRepository = createMemorySeasonRepository(store);
+    const raceRepository = createMemoryRaceRepository(store);
+
+    const result = await getCurrentRace({ seasonRepository, raceRepository });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.race.id).toBe(2);
     }
   });
 

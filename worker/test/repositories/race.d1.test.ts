@@ -117,6 +117,23 @@ describe("D1 RaceRepository", () => {
       expect(race!.name).toBe("Bahrain GP");
     });
 
+    test("skips cancelled races", async () => {
+      await execSQL(
+        env,
+        `
+        INSERT INTO races (id, season_id, round, name, location, circuit, country_code, quali_time, race_time, status)
+          VALUES (1, 1, 1, 'Bahrain GP', 'Bahrain', 'Sakhir', 'BH', '2026-03-07T15:00:00Z', '2026-03-08T15:00:00Z', 'cancelled');
+        INSERT INTO races (id, season_id, round, name, location, circuit, country_code, quali_time, race_time, status)
+          VALUES (2, 1, 2, 'Saudi Arabian GP', 'Saudi Arabia', 'Jeddah', 'SA', '2026-03-14T15:00:00Z', '2026-03-15T15:00:00Z', 'upcoming');
+      `,
+      );
+
+      const race = await repo.getCurrentRace(1);
+
+      expect(race).not.toBeNull();
+      expect(race!.round).toBe(2);
+    });
+
     test("returns in_progress race over upcoming", async () => {
       await execSQL(
         env,
@@ -150,6 +167,23 @@ describe("D1 RaceRepository", () => {
       expect(race).not.toBeNull();
       expect(race!.round).toBe(2); // Last completed
     });
+
+    test("returns last completed race when later races are cancelled", async () => {
+      await execSQL(
+        env,
+        `
+        INSERT INTO races (id, season_id, round, name, location, circuit, country_code, quali_time, race_time, status)
+          VALUES (1, 1, 1, 'Bahrain GP', 'Bahrain', 'Sakhir', 'BH', '2026-03-07T15:00:00Z', '2026-03-08T15:00:00Z', 'completed');
+        INSERT INTO races (id, season_id, round, name, location, circuit, country_code, quali_time, race_time, status)
+          VALUES (2, 1, 2, 'Saudi Arabian GP', 'Saudi Arabia', 'Jeddah', 'SA', '2026-03-14T15:00:00Z', '2026-03-15T15:00:00Z', 'cancelled');
+      `,
+      );
+
+      const race = await repo.getCurrentRace(1);
+
+      expect(race).not.toBeNull();
+      expect(race!.round).toBe(1);
+    });
   });
 
   describe("updateStatus()", () => {
@@ -181,6 +215,21 @@ describe("D1 RaceRepository", () => {
 
       const race = await repo.getById(1);
       expect(race!.status).toBe("completed");
+    });
+
+    test("can update to cancelled", async () => {
+      await execSQL(
+        env,
+        `
+        INSERT INTO races (id, season_id, round, name, location, circuit, country_code, quali_time, race_time, status)
+          VALUES (1, 1, 1, 'Bahrain GP', 'Bahrain', 'Sakhir', 'BH', '2026-03-07T15:00:00Z', '2026-03-08T15:00:00Z', 'in_progress');
+      `,
+      );
+
+      await repo.updateStatus(1, "cancelled");
+
+      const race = await repo.getById(1);
+      expect(race!.status).toBe("cancelled");
     });
   });
 });

@@ -20,7 +20,7 @@ export function createD1RaceRepository(env: Env): RaceRepository {
     },
 
     async getCurrentRace(seasonId: number): Promise<Race | null> {
-      // Get the next upcoming race, or the most recent in-progress race
+      // Get the next actionable race; cancelled races stay in the calendar only.
       const upcoming = await env.DB.prepare(
         "SELECT * FROM races WHERE season_id = ? AND status IN ('upcoming', 'in_progress') ORDER BY round LIMIT 1",
       )
@@ -29,9 +29,9 @@ export function createD1RaceRepository(env: Env): RaceRepository {
 
       if (upcoming) return upcoming;
 
-      // If no upcoming races, get the most recently completed race
+      // If no upcoming races remain, get the most recently completed race.
       return env.DB.prepare(
-        "SELECT * FROM races WHERE season_id = ? ORDER BY round DESC LIMIT 1",
+        "SELECT * FROM races WHERE season_id = ? AND status = 'completed' ORDER BY round DESC LIMIT 1",
       )
         .bind(seasonId)
         .first<Race>();

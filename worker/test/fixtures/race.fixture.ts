@@ -190,6 +190,10 @@ export function createCompletedRace(options: CreateRaceOptions = {}): Race {
   return createRace({ ...options, status: "completed" });
 }
 
+export function createCancelledRace(options: CreateRaceOptions = {}): Race {
+  return createRace({ ...options, status: "cancelled" });
+}
+
 export function createRaces(
   count: number,
   options: CreateRaceOptions = {},

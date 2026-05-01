@@ -12,7 +12,7 @@ import {
   formatDateTime,
   getPickWindowStatus,
 } from "../lib/utils";
-import { ArrowLeft, Check, Zap, X, Star, Clock } from "lucide-react";
+import { ArrowLeft, Check, Zap, X, Star, Clock, Ban } from "lucide-react";
 
 export default function MakePick() {
   const { raceId } = useParams();
@@ -54,7 +54,8 @@ export default function MakePick() {
 
   const pickWindow = race ? getPickWindowStatus(race) : null;
   const windowStatus = pickWindow?.status ?? "locked";
-  const canMakePick = windowStatus === "open";
+  const isCancelled = race?.status === "cancelled";
+  const canMakePick = windowStatus === "open" && !isCancelled;
   const existingPick = race ? picks.find((p) => p.race_id === race.id) : null;
 
   const handleSubmit = async () => {
@@ -149,9 +150,23 @@ export default function MakePick() {
                 <span className="font-medium">Sprint Weekend</span>
               </div>
             )}
+            {isCancelled && (
+              <div className="inline-flex items-center gap-1.5 bg-gray-500/20 text-gray-300 text-xs px-3 py-1.5 rounded-lg border border-gray-500/30">
+                <Ban className="h-3 w-3" />
+                <span className="font-medium">Cancelled</span>
+              </div>
+            )}
           </div>
 
-          {windowStatus === "locked" && (
+          {isCancelled && (
+            <div className="flex items-center gap-2 bg-gray-500/10 border border-gray-500/20 text-gray-300 text-sm px-4 py-3 rounded-xl">
+              <Ban className="h-4 w-4" />
+              <span className="font-medium">
+                This race was cancelled. Picks for it do not count.
+              </span>
+            </div>
+          )}
+          {!isCancelled && windowStatus === "locked" && (
             <div className="flex items-center gap-2 bg-f1-red/10 border border-f1-red/20 text-f1-red text-sm px-4 py-3 rounded-xl">
               <X className="h-4 w-4" />
               <span className="font-medium">
@@ -159,7 +174,7 @@ export default function MakePick() {
               </span>
             </div>
           )}
-          {windowStatus === "too_early" && pickWindow && (
+          {!isCancelled && windowStatus === "too_early" && pickWindow && (
             <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm px-4 py-3 rounded-xl">
               <Clock className="h-4 w-4" />
               <span className="font-medium">
@@ -167,7 +182,7 @@ export default function MakePick() {
               </span>
             </div>
           )}
-          {windowStatus === "open" && pickWindow && (
+          {!isCancelled && windowStatus === "open" && pickWindow && (
             <div>
               <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">
                 Picks lock 10 mins before{" "}

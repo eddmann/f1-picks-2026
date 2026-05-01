@@ -35,7 +35,7 @@ export interface Driver {
   created_at: string;
 }
 
-export type RaceStatus = "upcoming" | "in_progress" | "completed";
+export type RaceStatus = "upcoming" | "in_progress" | "completed" | "cancelled";
 
 export interface Race {
   id: number;

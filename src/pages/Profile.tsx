@@ -31,8 +31,9 @@ export default function Profile() {
   const userRank = standings.findIndex((s) => s.user_id === user?.id) + 1;
   const userStats = standings.find((s) => s.user_id === user?.id);
 
-  const totalPoints = picks.reduce((sum, p) => sum + (p.points || 0), 0);
-  const completedPicks = picks.filter((p) => p.points !== undefined);
+  const activePicks = picks.filter((p) => p.race?.status !== "cancelled");
+  const totalPoints = activePicks.reduce((sum, p) => sum + (p.points || 0), 0);
+  const completedPicks = activePicks.filter((p) => p.points !== undefined);
   const avgPoints =
     completedPicks.length > 0
       ? (totalPoints / completedPicks.length).toFixed(1)
@@ -111,7 +112,7 @@ export default function Profile() {
             <Calendar className="h-5 w-5 text-blue-400" />
           </div>
           <p className="text-2xl md:text-3xl font-bold text-white">
-            {picks.length}
+            {activePicks.length}
           </p>
           <p className="text-sm text-gray-500 mt-1">Picks</p>
         </div>

@@ -5,7 +5,7 @@ import { fetchRaces } from "../store/slices/racesSlice";
 import { fetchDrivers } from "../store/slices/driversSlice";
 import * as api from "../lib/api";
 import { getCountryFlag, formatDate } from "../lib/utils";
-import { ArrowLeft, Save, Check, X, Zap, RefreshCcw } from "lucide-react";
+import { ArrowLeft, Save, Check, X, Zap, RefreshCcw, Ban } from "lucide-react";
 
 interface DriverResult {
   driver_id: number;
@@ -29,6 +29,7 @@ export default function AdminResults() {
   const [results, setResults] = useState<DriverResult[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -52,7 +53,9 @@ export default function AdminResults() {
   }, [selectedRaceId, drivers]);
 
   const selectedRace = races.find((r) => r.id === selectedRaceId);
-  const pendingRaces = races.filter((r) => r.status !== "completed");
+  const pendingRaces = races.filter(
+    (r) => r.status !== "completed" && r.status !== "cancelled",
+  );
 
   const updatePosition = (
     driverId: number,
@@ -124,6 +127,25 @@ export default function AdminResults() {
     }
 
     setIsSyncing(false);
+  };
+
+  const handleCancel = async () => {
+    if (!selectedRaceId) return;
+
+    setIsCancelling(true);
+    setMessage(null);
+
+    const response = await api.cancelRace(selectedRaceId);
+
+    if (response.error) {
+      setMessage({ type: "error", text: response.error });
+    } else {
+      setMessage({ type: "success", text: "Race marked as cancelled" });
+      setSelectedRaceId(null);
+      dispatch(fetchRaces());
+    }
+
+    setIsCancelling(false);
   };
 
   if (racesLoading || driversLoading) {
@@ -305,23 +327,42 @@ export default function AdminResults() {
             </div>
           )}
 
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="w-full py-4 bg-f1-red hover:bg-f1-red-dark disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-base md:text-lg transition-all duration-200 btn-press glow-red flex items-center justify-center gap-2"
-          >
-            {isSubmitting ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white"></div>
-                <span>Saving...</span>
-              </>
-            ) : (
-              <>
-                <Save className="h-5 w-5" />
-                <span>Save Results</span>
-              </>
-            )}
-          </button>
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3">
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting || isCancelling}
+              className="w-full py-4 bg-f1-red hover:bg-f1-red-dark disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-base md:text-lg transition-all duration-200 btn-press glow-red flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white"></div>
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-5 w-5" />
+                  <span>Save Results</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={handleCancel}
+              disabled={isSubmitting || isCancelling}
+              className="px-5 py-4 bg-carbon border border-asphalt hover:bg-f1-red/10 hover:border-f1-red/40 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-sm text-gray-200 transition-all duration-200 btn-press flex items-center justify-center gap-2"
+            >
+              {isCancelling ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white"></div>
+                  <span>Cancelling...</span>
+                </>
+              ) : (
+                <>
+                  <Ban className="h-4 w-4" />
+                  <span>Mark Cancelled</span>
+                </>
+              )}
+            </button>
+          </div>
         </>
       )}
     </div>

@@ -14,7 +14,10 @@ export function createD1PickRepository(env: Env): PickRepository {
       const result = await env.DB.prepare(
         `SELECT DISTINCT p.driver_id FROM picks p
          JOIN races r ON p.race_id = r.id
-         WHERE p.user_id = ? AND r.season_id = ? AND r.is_wild_card = FALSE`,
+         WHERE p.user_id = ?
+           AND r.season_id = ?
+           AND r.is_wild_card = FALSE
+           AND r.status != 'cancelled'`,
       )
         .bind(userId, seasonId)
         .all<{ driver_id: number }>();

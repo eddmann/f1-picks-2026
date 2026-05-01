@@ -176,6 +176,42 @@ describe("getUserPicks", () => {
     }
   });
 
+  test("points undefined for cancelled races even if results exist", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1 });
+    const user = createUser({ id: 1 });
+    const race = createRace({
+      id: 1,
+      seasonId: 1,
+      round: 1,
+      status: "cancelled",
+    });
+    const driver = createDriver({ id: 1, seasonId: 1 });
+    const pick = createPick({ userId: 1, raceId: 1, driverId: 1 });
+    const raceResult = createRaceResult({
+      raceId: 1,
+      driverId: 1,
+      racePosition: 1,
+      racePoints: 25,
+    });
+
+    seedTestStore(store, {
+      seasons: [season],
+      users: [user],
+      races: [race],
+      drivers: [driver],
+      picks: [pick],
+      raceResults: [raceResult],
+    });
+
+    const result = await getUserPicks(createDeps(store), { userId: 1 });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.picks[0].points).toBeUndefined();
+    }
+  });
+
   test("includes both race and sprint points", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1 });

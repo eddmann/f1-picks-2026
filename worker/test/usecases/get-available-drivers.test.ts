@@ -126,6 +126,46 @@ describe("getAvailableDrivers", () => {
     }
   });
 
+  test("drivers picked in cancelled races remain available", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1, year: 2026 });
+    const user = createUser({ id: 1 });
+    const drivers = [
+      createDriver({ id: 1, seasonId: 1 }),
+      createDriver({ id: 2, seasonId: 1 }),
+    ];
+    const cancelledRace = createRace({
+      id: 1,
+      seasonId: 1,
+      round: 1,
+      status: "cancelled",
+    });
+    const pick = createPick({ userId: 1, raceId: 1, driverId: 1 });
+
+    seedTestStore(store, {
+      seasons: [season],
+      users: [user],
+      drivers,
+      races: [cancelledRace],
+      picks: [pick],
+    });
+
+    const seasonRepository = createMemorySeasonRepository(store);
+    const driverRepository = createMemoryDriverRepository(store);
+    const pickRepository = createMemoryPickRepository(store);
+
+    const result = await getAvailableDrivers(
+      { seasonRepository, driverRepository, pickRepository },
+      { userId: 1 },
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.drivers.every((d) => d.is_available)).toBe(true);
+      expect(result.value.used_driver_ids).toEqual([]);
+    }
+  });
+
   test("returns NOT_FOUND when no active season", async () => {
     const store = createTestStore();
     const user = createUser({ id: 1 });

@@ -131,6 +131,38 @@ describe("createPick", () => {
     }
   });
 
+  test("returns VALIDATION_ERROR when race is cancelled", async () => {
+    const store = createTestStore();
+    const season = createSeason({ id: 1 });
+    const race = createRace({
+      id: 1,
+      seasonId: 1,
+      status: "cancelled",
+      qualiTime: "2026-03-21T15:00:00Z",
+    });
+    const driver = createDriver({ id: 1, seasonId: 1 });
+
+    seedTestStore(store, {
+      seasons: [season],
+      races: [race],
+      drivers: [driver],
+    });
+
+    const stubClock = { now: () => new Date("2026-03-18T12:00:00Z") };
+
+    const result = await createPick(createDeps(store, stubClock), {
+      userId: 1,
+      raceId: 1,
+      driverId: 1,
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error.code).toBe("VALIDATION_ERROR");
+      expect(result.error.message).toBe("Race was cancelled");
+    }
+  });
+
   test("returns PICK_WINDOW_CLOSED (too_early) before race week", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1 });

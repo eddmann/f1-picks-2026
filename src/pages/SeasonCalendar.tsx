@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { fetchRaces } from "../store/slices/racesSlice";
 import { fetchPicks } from "../store/slices/picksSlice";
 import { getCountryFlag, formatDate, getPickWindowStatus } from "../lib/utils";
-import { Check, Lock, ChevronRight, Zap, Star, Clock } from "lucide-react";
+import { Check, Lock, ChevronRight, Zap, Star, Clock, Ban } from "lucide-react";
 
 export default function SeasonCalendar() {
   const dispatch = useAppDispatch();
@@ -48,12 +48,13 @@ export default function SeasonCalendar() {
             const isLocked = windowStatus.status === "locked";
             const isCompleted = race.status === "completed";
             const isInProgress = race.status === "in_progress";
+            const isCancelled = race.status === "cancelled";
 
             return (
               <Link
                 key={race.id}
                 to={
-                  isCompleted || isLocked
+                  isCompleted || isLocked || isCancelled
                     ? `/race/${race.id}`
                     : `/pick/${race.id}`
                 }
@@ -69,13 +70,15 @@ export default function SeasonCalendar() {
                     ${
                       isCompleted
                         ? "bg-green-flag border-green-flag"
-                        : isInProgress
-                          ? "bg-yellow-500 border-yellow-500 animate-pulse"
-                          : canPick
-                            ? "bg-f1-red border-f1-red"
-                            : isTooEarly
-                              ? "bg-blue-500/20 border-blue-500/50"
-                              : "bg-carbon border-asphalt"
+                        : isCancelled
+                          ? "bg-asphalt border-gray-500"
+                          : isInProgress
+                            ? "bg-yellow-500 border-yellow-500 animate-pulse"
+                            : canPick
+                              ? "bg-f1-red border-f1-red"
+                              : isTooEarly
+                                ? "bg-blue-500/20 border-blue-500/50"
+                                : "bg-carbon border-asphalt"
                     }
                   `}
                 >
@@ -85,12 +88,15 @@ export default function SeasonCalendar() {
                   {isInProgress && (
                     <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-pit-black" />
                   )}
+                  {isCancelled && (
+                    <Ban className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-gray-300" />
+                  )}
                 </div>
 
                 <div
                   className={`
                     bg-carbon border border-asphalt rounded-xl p-3 sm:p-4 card-hover
-                    ${isCompleted ? "opacity-75" : ""}
+                    ${isCompleted || isCancelled ? "opacity-75" : ""}
                   `}
                 >
                   <div className="flex items-center gap-3">
@@ -123,6 +129,12 @@ export default function SeasonCalendar() {
                             <span className="hidden sm:inline">Wild</span>
                           </span>
                         )}
+                        {isCancelled && (
+                          <span className="inline-flex items-center gap-0.5 text-xs bg-gray-500/20 text-gray-300 p-1 sm:px-1.5 sm:py-0.5 rounded border border-gray-500/30">
+                            <Ban className="h-2.5 w-2.5" />
+                            <span className="hidden sm:inline">Cancelled</span>
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -145,6 +157,10 @@ export default function SeasonCalendar() {
                           <div className="w-6 h-6 bg-green-flag/20 rounded-full flex items-center justify-center">
                             <Check className="h-3.5 w-3.5 text-green-flag" />
                           </div>
+                        </div>
+                      ) : isCancelled ? (
+                        <div className="w-6 h-6 bg-gray-500/20 rounded-full flex items-center justify-center">
+                          <Ban className="h-3.5 w-3.5 text-gray-400" />
                         </div>
                       ) : isLocked ? (
                         <div className="w-6 h-6 bg-asphalt rounded-full flex items-center justify-center">
@@ -171,21 +187,28 @@ export default function SeasonCalendar() {
                     </div>
                   )}
 
-                  {(isCompleted || isInProgress) && !pick?.points && (
-                    <div className="mt-2 pt-2 border-t border-asphalt">
-                      {isCompleted && (
-                        <span className="text-xs text-gray-500">
-                          Completed - View results
-                        </span>
-                      )}
-                      {isInProgress && (
-                        <span className="text-xs text-yellow-500 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse" />
-                          Race weekend in progress
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  {(isCompleted || isInProgress || isCancelled) &&
+                    !pick?.points && (
+                      <div className="mt-2 pt-2 border-t border-asphalt">
+                        {isCompleted && (
+                          <span className="text-xs text-gray-500">
+                            Completed - View results
+                          </span>
+                        )}
+                        {isInProgress && (
+                          <span className="text-xs text-yellow-500 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse" />
+                            Race weekend in progress
+                          </span>
+                        )}
+                        {isCancelled && (
+                          <span className="text-xs text-gray-500 flex items-center gap-1">
+                            <Ban className="h-3 w-3" />
+                            Race cancelled - picks do not count
+                          </span>
+                        )}
+                      </div>
+                    )}
                 </div>
               </Link>
             );

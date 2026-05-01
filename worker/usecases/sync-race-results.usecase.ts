@@ -81,7 +81,7 @@ export async function syncRaceResults(
   const validDriverIds = new Set(drivers.map((driver) => driver.id));
 
   for (const race of races) {
-    if (race.status === "completed") continue;
+    if (race.status === "completed" || race.status === "cancelled") continue;
 
     const raceTime = new Date(race.race_time);
     if (Number.isNaN(raceTime.getTime())) {

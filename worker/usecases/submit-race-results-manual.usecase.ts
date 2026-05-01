@@ -54,6 +54,10 @@ export async function submitRaceResultsManual(
     return err(validationError("Race not in active season", "raceId"));
   }
 
+  if (race.status === "cancelled") {
+    return err(validationError("Race was cancelled", "raceId"));
+  }
+
   const drivers = await deps.driverRepository.getBySeasonId(season.id);
   const validDriverIds = new Set(drivers.map((d) => d.id));
 

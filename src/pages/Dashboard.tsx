@@ -11,7 +11,15 @@ import {
   formatDateTime,
   getPickWindowStatus,
 } from "../lib/utils";
-import { Flag, Trophy, Calendar, ChevronRight, Zap, Clock } from "lucide-react";
+import {
+  Flag,
+  Trophy,
+  Calendar,
+  ChevronRight,
+  Zap,
+  Clock,
+  Ban,
+} from "lucide-react";
 
 export default function Dashboard() {
   const dispatch = useAppDispatch();
@@ -38,7 +46,9 @@ export default function Dashboard() {
 
   const pickWindow = currentRace ? getPickWindowStatus(currentRace) : null;
   const windowStatus = pickWindow?.status ?? "locked";
-  const canMakePick = windowStatus === "open";
+  const isCancelled = currentRace?.status === "cancelled";
+  const canMakePick = windowStatus === "open" && !isCancelled;
+  const activePicks = picks.filter((pick) => pick.race?.status !== "cancelled");
 
   const userRank = standings.findIndex((s) => s.user_id === user?.id) + 1;
   const userStats = standings.find((s) => s.user_id === user?.id);
@@ -66,7 +76,9 @@ export default function Dashboard() {
               <span className="text-sm font-medium text-gray-300">
                 {currentRace.status === "completed"
                   ? "Latest Race"
-                  : "Next Race"}
+                  : currentRace.status === "cancelled"
+                    ? "Cancelled Race"
+                    : "Next Race"}
               </span>
             </div>
             <span className="text-xs text-gray-500 bg-carbon px-2.5 py-1 rounded-lg">
@@ -90,36 +102,47 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {currentRace.status !== "completed" && pickWindow && (
-              <div>
-                {windowStatus === "locked" && (
-                  <div className="flex items-center gap-2 text-f1-red text-sm">
-                    <Clock className="h-4 w-4" />
-                    <span>Picks are locked for this race</span>
-                  </div>
-                )}
-                {windowStatus === "too_early" && (
-                  <div className="flex items-center gap-2 text-blue-400 text-sm">
-                    <Clock className="h-4 w-4" />
-                    <span>
-                      Pick window opens {formatDate(pickWindow.opensAt)}
-                    </span>
-                  </div>
-                )}
-                {windowStatus === "open" && (
-                  <>
-                    <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">
-                      Picks lock 10 mins before{" "}
-                      {pickWindow.deadlineSession === "sprint_qualifying"
-                        ? "Sprint Quali"
-                        : "Quali"}
-                      : {formatDateTime(pickWindow.closesAt)}
-                    </p>
-                    <Countdown targetDate={pickWindow.closesAt.toISOString()} />
-                  </>
-                )}
+            {isCancelled && (
+              <div className="flex items-center gap-2 text-gray-400 text-sm mb-5">
+                <Ban className="h-4 w-4" />
+                <span>This race was cancelled and will not affect picks.</span>
               </div>
             )}
+
+            {currentRace.status !== "completed" &&
+              !isCancelled &&
+              pickWindow && (
+                <div>
+                  {windowStatus === "locked" && (
+                    <div className="flex items-center gap-2 text-f1-red text-sm">
+                      <Clock className="h-4 w-4" />
+                      <span>Picks are locked for this race</span>
+                    </div>
+                  )}
+                  {windowStatus === "too_early" && (
+                    <div className="flex items-center gap-2 text-blue-400 text-sm">
+                      <Clock className="h-4 w-4" />
+                      <span>
+                        Pick window opens {formatDate(pickWindow.opensAt)}
+                      </span>
+                    </div>
+                  )}
+                  {windowStatus === "open" && (
+                    <>
+                      <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider">
+                        Picks lock 10 mins before{" "}
+                        {pickWindow.deadlineSession === "sprint_qualifying"
+                          ? "Sprint Quali"
+                          : "Quali"}
+                        : {formatDateTime(pickWindow.closesAt)}
+                      </p>
+                      <Countdown
+                        targetDate={pickWindow.closesAt.toISOString()}
+                      />
+                    </>
+                  )}
+                </div>
+              )}
 
             <div className="flex gap-2 mb-5">
               {currentRace.has_sprint && (
@@ -131,6 +154,12 @@ export default function Dashboard() {
               {currentRace.is_wild_card && (
                 <div className="inline-flex items-center gap-1.5 bg-yellow-500/20 text-yellow-300 text-xs px-3 py-1.5 rounded-lg border border-yellow-500/30">
                   Wild Card
+                </div>
+              )}
+              {isCancelled && (
+                <div className="inline-flex items-center gap-1.5 bg-gray-500/20 text-gray-300 text-xs px-3 py-1.5 rounded-lg border border-gray-500/30">
+                  <Ban className="h-3 w-3" />
+                  Cancelled
                 </div>
               )}
             </div>
@@ -176,7 +205,7 @@ export default function Dashboard() {
                     )}
                   </div>
                 </div>
-              ) : currentRace.status === "upcoming" ? (
+              ) : currentRace.status === "upcoming" && !isCancelled ? (
                 <Link
                   to={`/pick/${currentRace.id}`}
                   className="flex items-center justify-center gap-2 w-full py-4 bg-f1-red hover:bg-f1-red-dark rounded-xl font-bold transition-all duration-200 btn-press glow-red"
@@ -231,9 +260,13 @@ export default function Dashboard() {
             <span className="text-sm text-gray-400 font-medium">Races</span>
           </div>
           <p className="text-3xl md:text-4xl font-bold text-white">
-            {picks.length}
+            {activePicks.length}
           </p>
-          <p className="text-sm text-gray-500 mt-1">picks made</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {activePicks.length === picks.length
+              ? "picks made"
+              : `${activePicks.length} active picks`}
+          </p>
         </Link>
       </div>
 

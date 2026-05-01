@@ -17,7 +17,14 @@ export function createMemoryPickRepository(store: TestStore): PickRepository {
         if (pick.user_id !== userId) continue;
 
         const race = store.races.find((r) => r.id === pick.race_id);
-        if (!race || race.season_id !== seasonId || race.is_wild_card) continue;
+        if (
+          !race ||
+          race.season_id !== seasonId ||
+          race.is_wild_card ||
+          race.status === "cancelled"
+        ) {
+          continue;
+        }
 
         driverIds.add(pick.driver_id);
       }

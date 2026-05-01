@@ -148,7 +148,7 @@ export async function checkAndSendPickNotifications(
   let reminderNotifications = 0;
 
   for (const race of races) {
-    if (race.status === "completed") continue;
+    if (race.status === "completed" || race.status === "cancelled") continue;
 
     const windowStatus = getPickWindowStatus(race, now);
 

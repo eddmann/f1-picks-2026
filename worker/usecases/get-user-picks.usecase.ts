@@ -60,9 +60,10 @@ export async function getUserPicks(
         ...pick,
         driver,
         race,
-        points: driverResult
-          ? driverResult.race_points + driverResult.sprint_points
-          : undefined,
+        points:
+          race?.status === "completed" && driverResult
+            ? driverResult.race_points + driverResult.sprint_points
+            : undefined,
       };
     }),
   );

@@ -25,4 +25,9 @@ export interface RaceResultRepository {
     racePoints: number,
     sprintPoints: number,
   ): Promise<RaceResult>;
+
+  /**
+   * Delete all stored results for a race
+   */
+  deleteByRaceId(raceId: number): Promise<void>;
 }

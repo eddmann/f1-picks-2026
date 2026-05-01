@@ -53,5 +53,11 @@ export function createD1RaceResultRepository(env: Env): RaceResultRepository {
         .first<RaceResult>();
       return result!;
     },
+
+    async deleteByRaceId(raceId: number): Promise<void> {
+      await env.DB.prepare("DELETE FROM race_results WHERE race_id = ?")
+        .bind(raceId)
+        .run();
+    },
   };
 }

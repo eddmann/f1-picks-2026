@@ -5,6 +5,21 @@ import type {
 } from "./f1-results-fetcher";
 
 const OPENF1_BASE = "https://api.openf1.org/v1";
+const REQUEST_SPACING_MS = 400;
+const MAX_RATE_LIMIT_RETRIES = 3;
+const INITIAL_RETRY_DELAY_MS = 1_000;
+
+export interface OpenF1HttpClient {
+  fetch(input: RequestInfo | URL): Promise<Response>;
+  sleep(ms: number): Promise<void>;
+}
+
+type OpenF1Request = <T>(url: string) => Promise<T>;
+
+const defaultHttpClient: OpenF1HttpClient = {
+  fetch: (input) => globalThis.fetch(input),
+  sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+};
 
 interface OpenF1Meeting {
   meeting_key: number;
@@ -38,22 +53,65 @@ function normalizeText(value?: string | null): string {
     .replace(/[^a-z0-9]/g, "");
 }
 
-async function fetchMeetings(year: number): Promise<OpenF1Meeting[]> {
-  const url = `${OPENF1_BASE}/meetings?year=${year}`;
-  const response = await fetch(url);
+function getRetryDelayMs(response: Response, attempt: number): number {
+  const retryAfter = response.headers.get("Retry-After");
+  if (retryAfter) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds) && seconds >= 0) {
+      return Math.max(seconds * 1_000, REQUEST_SPACING_MS);
+    }
 
-  if (!response.ok) {
-    throw new Error(`OpenF1 API error: ${response.status}`);
+    const retryAt = Date.parse(retryAfter);
+    if (!Number.isNaN(retryAt)) {
+      return Math.max(retryAt - Date.now(), REQUEST_SPACING_MS);
+    }
   }
 
-  return response.json();
+  return INITIAL_RETRY_DELAY_MS * 2 ** attempt;
+}
+
+function createRequest(client: OpenF1HttpClient): OpenF1Request {
+  let hasMadeRequest = false;
+
+  return async function request<T>(url: string): Promise<T> {
+    for (let attempt = 0; attempt <= MAX_RATE_LIMIT_RETRIES; attempt++) {
+      if (hasMadeRequest) {
+        await client.sleep(REQUEST_SPACING_MS);
+      }
+      hasMadeRequest = true;
+
+      const response = await client.fetch(url);
+      if (response.ok) {
+        return response.json() as Promise<T>;
+      }
+
+      const canRetry =
+        response.status === 429 && attempt < MAX_RATE_LIMIT_RETRIES;
+      if (!canRetry) {
+        throw new Error(`OpenF1 API error: ${response.status}`);
+      }
+
+      await client.sleep(getRetryDelayMs(response, attempt));
+    }
+
+    throw new Error("OpenF1 API retry limit exceeded");
+  };
+}
+
+async function fetchMeetings(
+  year: number,
+  request: OpenF1Request,
+): Promise<OpenF1Meeting[]> {
+  const url = `${OPENF1_BASE}/meetings?year=${year}`;
+  return request<OpenF1Meeting[]>(url);
 }
 
 async function resolveMeetingKey(
   year: number,
   race: { name: string; country_code: string },
+  request: OpenF1Request,
 ): Promise<number | null> {
-  const meetings = await fetchMeetings(year);
+  const meetings = await fetchMeetings(year, request);
   const raceName = normalizeText(race.name);
   const raceCountry = race.country_code?.toUpperCase();
 
@@ -81,28 +139,18 @@ async function resolveMeetingKey(
 async function fetchSessions(
   year: number,
   meetingKey: number,
+  request: OpenF1Request,
 ): Promise<OpenF1Session[]> {
   const url = `${OPENF1_BASE}/sessions?year=${year}&meeting_key=${meetingKey}`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`OpenF1 API error: ${response.status}`);
-  }
-
-  return response.json();
+  return request<OpenF1Session[]>(url);
 }
 
 async function fetchFinalPositions(
   sessionKey: number,
+  request: OpenF1Request,
 ): Promise<OpenF1Position[]> {
   const url = `${OPENF1_BASE}/position?session_key=${sessionKey}&position<=20`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`OpenF1 API error: ${response.status}`);
-  }
-
-  const positions: OpenF1Position[] = await response.json();
+  const positions = await request<OpenF1Position[]>(url);
   const finalPositions = new Map<number, OpenF1Position>();
   for (const pos of positions) {
     finalPositions.set(pos.driver_number, pos);
@@ -114,20 +162,26 @@ async function fetchFinalPositions(
 export async function fetchOpenF1Results(
   seasonYear: number,
   race: F1RaceInput,
+  client: OpenF1HttpClient = defaultHttpClient,
 ): Promise<
   { ok: true; results: F1DriverResult[] } | { ok: false; message: string }
 > {
   try {
-    const meetingKey = await resolveMeetingKey(seasonYear, {
-      name: race.name,
-      country_code: race.country_code,
-    });
+    const request = createRequest(client);
+    const meetingKey = await resolveMeetingKey(
+      seasonYear,
+      {
+        name: race.name,
+        country_code: race.country_code,
+      },
+      request,
+    );
 
     if (!meetingKey) {
       return { ok: false, message: "OpenF1 meeting not found for race" };
     }
 
-    const sessions = await fetchSessions(seasonYear, meetingKey);
+    const sessions = await fetchSessions(seasonYear, meetingKey, request);
     const raceSession = sessions.find(
       (s) => s.session_type === "Race" && s.session_name !== "Sprint",
     );
@@ -136,14 +190,20 @@ export async function fetchOpenF1Results(
       return { ok: false, message: "Race session not found in OpenF1" };
     }
 
-    const racePositions = await fetchFinalPositions(raceSession.session_key);
+    const racePositions = await fetchFinalPositions(
+      raceSession.session_key,
+      request,
+    );
 
     let sprintPositions: OpenF1Position[] = [];
     const sprintSession = sessions.find(
       (s) => s.session_type === "Sprint" || s.session_name === "Sprint",
     );
     if (sprintSession) {
-      sprintPositions = await fetchFinalPositions(sprintSession.session_key);
+      sprintPositions = await fetchFinalPositions(
+        sprintSession.session_key,
+        request,
+      );
     }
 
     const racePositionMap = new Map(
@@ -185,6 +245,13 @@ export async function fetchOpenF1Results(
   }
 }
 
-export const OpenF1ResultsFetcher: F1ResultsFetcher = {
-  fetchResults: fetchOpenF1Results,
-};
+export function createOpenF1ResultsFetcher(
+  client: OpenF1HttpClient = defaultHttpClient,
+): F1ResultsFetcher {
+  return {
+    fetchResults: (seasonYear, race) =>
+      fetchOpenF1Results(seasonYear, race, client),
+  };
+}
+
+export const OpenF1ResultsFetcher = createOpenF1ResultsFetcher();

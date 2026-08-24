@@ -78,7 +78,6 @@ export async function syncRaceResults(
 
   const synced: number[] = [];
   const failed: number[] = [];
-  const validDriverIds = new Set(drivers.map((driver) => driver.id));
 
   for (const race of races) {
     if (race.status === "completed" || race.status === "cancelled") continue;
@@ -97,7 +96,17 @@ export async function syncRaceResults(
       country_code: race.country_code,
     });
 
-    if (!f1Result.ok || f1Result.results.length === 0) {
+    if (!f1Result.ok) {
+      console.error("Race result sync failed", {
+        raceId: race.id,
+        raceName: race.name,
+        message: f1Result.message,
+      });
+      failed.push(race.id);
+      continue;
+    }
+
+    if (f1Result.results.length === 0) {
       failed.push(race.id);
       continue;
     }
@@ -118,10 +127,6 @@ export async function syncRaceResults(
         unknownDriverNumbers.add(result.driver_number);
         continue;
       }
-      if (!validDriverIds.has(driverId)) {
-        unknownDriverNumbers.add(result.driver_number);
-        continue;
-      }
       results.push({
         driver_id: driverId,
         race_position: result.race_position,
@@ -130,8 +135,11 @@ export async function syncRaceResults(
     }
 
     if (unknownDriverNumbers.size > 0) {
-      failed.push(race.id);
-      continue;
+      console.warn("Ignoring unrostered drivers in race result sync", {
+        raceId: race.id,
+        raceName: race.name,
+        driverNumbers: [...unknownDriverNumbers],
+      });
     }
 
     if (results.length === 0) {

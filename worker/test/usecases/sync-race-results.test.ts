@@ -237,7 +237,7 @@ describe("syncRaceResults", () => {
     expect(store.races[0].status).not.toBe("completed");
   });
 
-  test("fails when unknown driver numbers are returned", async () => {
+  test("ignores unrostered substitute drivers", async () => {
     const store = createTestStore();
     const season = createSeason({ id: 1, isActive: true });
     const race = createRace({
@@ -272,9 +272,11 @@ describe("syncRaceResults", () => {
       clock: { now: () => new Date("2026-03-08T20:00:00Z") },
     });
 
-    expect(result.synced.length).toBe(0);
-    expect(result.failed).toEqual([race.id]);
-    expect(store.raceResults.length).toBe(0);
+    expect(result.synced).toEqual([race.id]);
+    expect(result.failed.length).toBe(0);
+    expect(store.raceResults.length).toBe(1);
+    expect(store.raceResults[0].driver_id).toBe(1);
+    expect(store.races[0].status).toBe("completed");
   });
 
   test("applies sprint points when sprint results are present", async () => {
